@@ -19,7 +19,7 @@
     "mongo"
   ],
   "author": "Mariam V. Maldonado",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/dotenv": "^8.2.0",
