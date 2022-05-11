@@ -1,0 +1,64 @@
+export default class CustomError extends Error {
+  status: string = 'error';
+  message: any;
+  httpCode: any;
+  internalCode: any;
+  data: any;
+
+  constructor({ message, httpCode, internalCode, data }) {
+    super();
+    this.message = message ?? 'Fallo en el servidor';
+    this.httpCode = httpCode ?? 500;
+    this.internalCode = internalCode ?? 0;
+    this.data = data;
+  }
+
+  static SERVER_ERROR = new CustomError({
+    message: 'Ocurrió un error interno en el servidor',
+    httpCode: 500,
+    internalCode: 1,
+    data: null
+  });
+
+  static AUTH_ERROR = new CustomError({
+    message: 'No autorizado',
+    httpCode: 401,
+    internalCode: 2,
+    data: null
+  });
+
+  static TOKEN_ERROR = new CustomError({
+    message: 'Token no válida',
+    httpCode: 498,
+    internalCode: 3,
+    data: null
+  });
+
+  static USER_NOT_FOUND = new CustomError({
+    message: 'Usuario no encontrado',
+    httpCode: 404,
+    internalCode: 4,
+    data: null
+  });
+
+  static ROLE_ERROR = new CustomError({
+    message: 'No tiene los permisos suficientes',
+    httpCode: 401,
+    internalCode: 5,
+    data: null
+  });
+
+  static REQUIRED_DATA = new CustomError({
+    message: 'Faltan parámetros requeridos',
+    httpCode: 401,
+    internalCode: 6,
+    data: null
+  });
+
+  static DUP_DATA = new CustomError({
+    message: 'Datos duplicados',
+    httpCode: 401,
+    internalCode: 7,
+    data: null
+  });
+}
