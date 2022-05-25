@@ -1,6 +1,7 @@
 import express, { Application } from 'express';
 import { connect, Mongoose } from 'mongoose';
 import morgan from 'morgan';
+import CoreRoutes from '../../core/routes/index.routes';
 import AuthRoutes from '../../auth/routes/index.routes';
 import { ENV } from '../config/env.config';
 import { AuthenticationMiddleware } from '../middleware/authentication.middleware';
@@ -50,7 +51,8 @@ export default class Server {
     app.use(morgan('dev'));
 
     // Module routing
-    app.use('/api/v1', AuthRoutes);
+    app.use('/api/v1/core', CoreRoutes);
+    app.use('/api/v1/auth', AuthRoutes);
 
     app.use(ServerConfiguration.handleErrorMiddleware);
     app.use(ServerConfiguration.notFound);

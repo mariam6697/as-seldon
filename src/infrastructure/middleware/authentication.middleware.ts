@@ -5,7 +5,8 @@ import CustomError from '../models/error.model';
 
 const roleAccess = {
   admin: {
-    user: ['createAny', 'readAny', 'updateAny', 'deleteAny']
+    user: ['createAny', 'readAny', 'updateAny', 'deleteAny'],
+    project: ['createAny', 'readAny', 'updateAny', 'deleteAny']
   },
   maintainer: {
     user: ['readOwn', 'updateOwn']

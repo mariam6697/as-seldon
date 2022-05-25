@@ -14,6 +14,10 @@ interface Repository {
   url: string;
 }
 
+const authHeaders: any = {
+  authorization: `Bearer ${ENV.gitHubAccessToken}`
+};
+
 export default class GitHubUtils {
   public static async createRepo(data: {
     name: string;
@@ -21,7 +25,9 @@ export default class GitHubUtils {
     autoInit: boolean;
     private: boolean;
   }): Promise<Repository> {
-    const response = await axios.post(`${ENV.gitHubApiUrl}/orgs/${ENV.gitHubOrgName}/repos`, data);
+    const response = await axios.post(`${ENV.gitHubApiUrl}/orgs/${ENV.gitHubOrgName}/repos`, data, {
+      headers: authHeaders
+    });
     console.log('response', response);
     return {} as Repository;
   }
