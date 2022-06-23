@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { ENV } from '../config/env.config';
 import CustomError from '../models/error.model';
 
 export default class ServerConfigurations {
@@ -18,7 +19,16 @@ export default class ServerConfigurations {
 
   public static notFound(req: Request, res: Response, next: NextFunction) {
     res.status(404).json({
-      message: 'Ohh you are lost, read the API documentation to find your way back home :)'
+      status: 'error',
+      message: 'This route does not exist'
+    });
+  }
+
+  public static baseEndpoint(req: Request, res: Response, next: NextFunction) {
+    res.status(200).json({
+      status: 'ok',
+      message: `Welcome to AS Seldon, the API for the AS Project`,
+      version: ENV.apiVersion
     });
   }
 

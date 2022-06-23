@@ -51,8 +51,12 @@ export default class Server {
     app.use(morgan('dev'));
 
     // Module routing
-    app.use('/api/v1/core', CoreRoutes);
-    app.use('/api/v1/auth', AuthRoutes);
+    const apiVersion: string = ENV.apiVersion;
+    app.get('/', ServerConfiguration.baseEndpoint);
+    app.get('/api', ServerConfiguration.baseEndpoint);
+    app.get(`/api/${apiVersion}`, ServerConfiguration.baseEndpoint);
+    app.use(`/api/${apiVersion}/core`, CoreRoutes);
+    app.use(`/api/${apiVersion}/auth`, AuthRoutes);
 
     app.use(ServerConfiguration.handleErrorMiddleware);
     app.use(ServerConfiguration.notFound);

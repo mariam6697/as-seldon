@@ -4,6 +4,7 @@ dotenv.config();
 
 export const ENV = {
   port: process.env.PORT || '6060',
+  apiVersion: process.env.API_VERSION || 'v1',
   mongoUrl: process.env.MONGO_URL,
   jwtSecret: process.env.JWT_SECRET,
   gitHubApiUrl: process.env.GITHUB_API_URL,

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { ENV } from '../../infrastructure/config/env.config';
 import ProjectRoutes from './project.routes';
 
 const router: Router = Router();
@@ -6,7 +7,7 @@ const router: Router = Router();
 router.get('/', (req, res, next) => {
   res.json({
     status: 'ok',
-    version: 'v1',
+    version: ENV.apiVersion,
     info: 'AS Seldon Core Module'
   });
 });
