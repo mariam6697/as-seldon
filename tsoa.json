@@ -1,0 +1,12 @@
+{
+  "entryFile": "src/app.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "spec": {
+    "outputDirectory": "src",
+    "specVersion": 3,
+    "basePath": "/api/v1"
+  },
+  "routes": {
+    "routesDir": "src"
+  }
+}

@@ -1,11 +1,14 @@
 import express, { Application } from 'express';
 import { connect, Mongoose } from 'mongoose';
 import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
 import CoreRoutes from '../../core/routes/index.routes';
 import AuthRoutes from '../../auth/routes/index.routes';
 import { ENV } from '../config/env.config';
 import { AuthenticationMiddleware } from '../middleware/authentication.middleware';
 import ServerConfiguration from '../middleware/server-configuration.middleware';
+
+import * as swaggerJson from '../../swagger.json';
 
 export default class Server {
   public app: Application;
@@ -57,6 +60,17 @@ export default class Server {
     app.get(`/api/${apiVersion}`, ServerConfiguration.baseEndpoint);
     app.use(`/api/${apiVersion}/core`, CoreRoutes);
     app.use(`/api/${apiVersion}/auth`, AuthRoutes);
+
+    // Swagger setup
+    app.use(`/api/${apiVersion}/static`, express.static('src/static'));
+    app.use(
+      `/api/${apiVersion}/docs`,
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerJson, {
+        customCssUrl: '../static/swagger.css',
+        customSiteTitle: 'AS Seldon Docs'
+      })
+    );
 
     app.use(ServerConfiguration.handleErrorMiddleware);
     app.use(ServerConfiguration.notFound);

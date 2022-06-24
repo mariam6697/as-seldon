@@ -1,13 +1,15 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "esModuleInterop": true,
-        "target": "es6",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "outDir": "dist"
-    },
-    "lib": [
-        "es2015"
-    ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
+  },
+  "lib": ["es2015"]
 }

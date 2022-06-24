@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongoose';
 import Category from './category.model';
 
 export default interface Project {
@@ -7,7 +6,7 @@ export default interface Project {
   description?: string;
   semester?: Semester;
   year?: string;
-  categories?: ObjectId[] | Category[];
+  categories?: any[] | Category[];
   updates?: ProjectUpdate[];
 }
 
