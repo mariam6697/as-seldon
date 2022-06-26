@@ -4,7 +4,7 @@ import MiscUtils from '../../infrastructure/utils/misc.utils';
 import Project from '../models/project.model';
 import { ProjectService } from '../services/project.service';
 
-@Tags('Projects')
+@Tags('Core')
 @Route(`core/projects`)
 export class ProjectController {
   /**

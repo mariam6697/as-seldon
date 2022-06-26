@@ -58,6 +58,7 @@ export default class Server {
     app.get('/', ServerConfiguration.baseEndpoint);
     app.get('/api', ServerConfiguration.baseEndpoint);
     app.get(`/api/${apiVersion}`, ServerConfiguration.baseEndpoint);
+
     app.use(`/api/${apiVersion}/core`, CoreRoutes);
     app.use(`/api/${apiVersion}/auth`, AuthRoutes);
 

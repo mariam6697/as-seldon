@@ -7,7 +7,8 @@ const UserSchema = new Schema<User>(
     role: { type: String, default: 'maintainer', enum: ['maintainer', 'admin'] },
     name: { type: String, required: true },
     surname: { type: String, required: true },
-    password: { type: String, select: false }
+    password: { type: String, select: false },
+    enabled: { type: Boolean, select: true, default: true }
   },
   { timestamps: true }
 );

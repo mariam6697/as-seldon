@@ -19,11 +19,17 @@ class SetupSeldon {
     return users.length == 0;
   };
 
-  static createAdmin = async (email, password, database) => {
+  static createAdmin = async (name, surname, email, password, database) => {
     try {
       const usersCollection = await database.collection('users');
       const hashedPassword = await hash(password, 15);
-      await usersCollection.insertOne({ email, password: hashedPassword, role: 'admin' });
+      await usersCollection.insertOne({
+        name,
+        surname,
+        email,
+        password: hashedPassword,
+        role: 'admin'
+      });
       return `Successfully created admin user with email ${email}`;
     } catch (error) {
       return `An error has occured`;
@@ -36,9 +42,11 @@ class SetupSeldon {
     const databaseEmpty = await this.isDatabaseEmpty(db);
     if (databaseEmpty) {
       const rl = readline.createInterface({ input, output });
+      const name = await rl.question('Insert your name: ');
+      const surname = await rl.question('Insert your surname: ');
       const email = await rl.question('Insert your email: ');
       const password = await rl.question('Create your password: ');
-      const response = await this.createAdmin(email, password, db);
+      const response = await this.createAdmin(name, surname, email, password, db);
       console.log(response);
       rl.close();
     } else {
