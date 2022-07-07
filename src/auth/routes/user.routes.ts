@@ -45,7 +45,7 @@ router.get(
       if (userId != loggedInUserId && loggedInUserRole != 'admin') {
         throw CustomError.AUTH_ERROR;
       }
-      const user: User = await UserController.getMyData(userId);
+      const user: User = await UserController.get(userId);
       res.status(200).json({ status: 'ok', data: user });
     } catch (error: any) {
       next(error);

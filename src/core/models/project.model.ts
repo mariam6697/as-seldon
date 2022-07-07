@@ -13,7 +13,7 @@ export default interface Project {
 export interface ProjectUpdate {
   _id?: string;
   title: string;
-  descripcion: string;
+  description: string;
   date: Date;
 }
 

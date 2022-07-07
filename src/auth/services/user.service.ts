@@ -46,13 +46,7 @@ export class UserService {
 
   public static async getAll(page: number, limit: number, search: string): Promise<any> {
     const offset: number = (page - 1) * limit;
-    let query: any = {
-      $and: [
-        {
-          $or: [{ isDeleted: false }, { isDeleted: null }]
-        }
-      ]
-    };
+    let query: any = {};
     if (search) {
       const searchRegexp: any = { $regex: search, $options: 'i' };
       query['$and'].push({

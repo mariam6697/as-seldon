@@ -40,7 +40,7 @@ export class UserController {
   }
 
   @Get('/{userId}')
-  public static async getMyData(@Path() userId: string): Promise<any> {
+  public static async get(@Path() userId: string): Promise<any> {
     try {
       const response: any = await UserService.get(userId);
       return response;
