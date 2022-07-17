@@ -29,15 +29,28 @@ export class ProjectService {
     if (search) {
       const searchRegexp: any = { $regex: search, $options: 'i' };
       query['$and'].push({
-        $or: [
-          { name: searchRegexp },
-          { year: searchRegexp }
-        ]
+        $or: [{ name: searchRegexp }, { year: searchRegexp }]
       });
     }
     const result: any = await ProjectModel.find(query).skip(offset).limit(limit);
     const projects: Project[] = result;
     const totalItems: number = await ProjectModel.countDocuments(query);
     return { totalItems, limit, page, projects };
+  }
+
+  public static async update(projectId: string, projectData: Project): Promise<Project> {
+    try {
+      const project: Project = await ProjectModel.findById(projectId);
+      if (!project) {
+        throw CustomError.PROJECT_NOT_FOUND;
+      }
+      const updatedProject: Project = await ProjectModel.findByIdAndUpdate(
+        project._id,
+        projectData
+      ).lean();
+      return updatedProject;
+    } catch (error: any) {
+      throw error;
+    }
   }
 }

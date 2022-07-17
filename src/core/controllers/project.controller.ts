@@ -1,4 +1,4 @@
-import { Body, Get, Path, Post, Query, Route, Tags } from 'tsoa';
+import { Body, Get, Path, Post, Put, Query, Route, Tags } from 'tsoa';
 import CustomError from '../../infrastructure/models/error.model';
 import MiscUtils from '../../infrastructure/utils/misc.utils';
 import Project from '../models/project.model';
@@ -51,4 +51,17 @@ export class ProjectController {
       throw error;
     }
   }
+
+  /**
+   * Update a project data given its ID.
+   */
+   @Put('/{projectId}')
+   public static async update(@Path() projectId: string, @Body() projectData: Project): Promise<any> {
+     try {
+       const response: any = await ProjectService.update(projectId, projectData);
+       return response;
+     } catch (error: any) {
+       throw error;
+     }
+   }
 }

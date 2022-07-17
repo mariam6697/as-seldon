@@ -53,4 +53,20 @@ router.get(
   }
 );
 
+router.put(
+  '/:projectId',
+  AuthenticationMiddleware.allowIfLoggedIn,
+  AuthenticationMiddleware.grantAccess('project', 'updateAny'),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId: string = req.params.projectId;
+      const projectData: Project = req.body;
+      const project: Project = await ProjectController.update(projectId, projectData);
+      res.status(200).json({ status: 'ok', data: project });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+);
+
 export default router;
