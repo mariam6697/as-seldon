@@ -8,6 +8,8 @@ export default interface Project {
   year?: string;
   categories?: any[] | Category[];
   updates?: ProjectUpdate[];
+  mainImage?: string;
+  extraImages?: string[];
 }
 
 export interface ProjectUpdate {

@@ -34,7 +34,7 @@ export class UserService {
 
   public static async get(userId: string): Promise<User> {
     try {
-      const user: User = await UserModel.findById(userId);
+      const user: User = await UserModel.findById(userId).lean();
       if (!user) {
         throw CustomError.USER_NOT_FOUND;
       }
@@ -74,13 +74,13 @@ export class UserService {
 
   public static async update(userId: string, newData: User): Promise<User> {
     try {
-      const user: User = await UserModel.findById(userId);
+      const user: User = await UserModel.findById(userId).lean();
       if (!user) {
         throw CustomError.USER_NOT_FOUND;
       }
       const updatedUser: User = await UserModel.findByIdAndUpdate(userId, newData, {
         useFindAndModify: false
-      });
+      }).lean();
       return updatedUser;
     } catch (error: any) {
       throw error;
@@ -89,7 +89,7 @@ export class UserService {
 
   public static async delete(userId: string): Promise<void> {
     try {
-      const user: User = await UserModel.findById(userId);
+      const user: User = await UserModel.findById(userId).lean();
       if (!user) {
         throw CustomError.USER_NOT_FOUND;
       }

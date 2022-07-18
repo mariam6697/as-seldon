@@ -63,9 +63,16 @@ export default class CustomError extends Error {
   });
 
   static PROJECT_NOT_FOUND = new CustomError({
-    message: 'Proyecto no no encontrado',
+    message: 'Proyecto no encontrado',
     httpCode: 404,
     internalCode: 8,
+    data: null
+  });
+
+  static FILE_NOT_FOUND = new CustomError({
+    message: 'Archivo no encontrado',
+    httpCode: 404,
+    internalCode: 9,
     data: null
   });
 }

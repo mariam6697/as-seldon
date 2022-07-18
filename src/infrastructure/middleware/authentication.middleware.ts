@@ -24,7 +24,8 @@ const roleAccess = {
       'updateAny',
       'deleteOwn',
       'deleteAny'
-    ]
+    ],
+    file: ['createAny', 'readAny', 'updateAny', 'deleteAny']
   },
   maintainer: {
     user: ['readOwn', 'updateOwn'],

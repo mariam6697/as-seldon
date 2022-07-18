@@ -8,7 +8,9 @@ const ProjectSchema = new Schema<Project>(
     semester: { type: String, default: null, enum: ['1', '2'] },
     year: { type: String, required: true },
     categories: [{ type: 'ObjectId', ref: 'Category' }],
-    updates: [{ type: Object, required: true, default: [] }]
+    updates: [{ type: Object, required: true, default: [] }],
+    mainImage: { type: Schema.Types.ObjectId, ref: 'File' },
+    extraImages: [{ type: Schema.Types.ObjectId, ref: 'File', required: true, default: [] }]
   },
   { timestamps: true }
 );

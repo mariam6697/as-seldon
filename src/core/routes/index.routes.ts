@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { ENV } from '../../infrastructure/config/env.config';
 import ProjectRoutes from './project.routes';
+import FileRoutes from './file.routes';
 
 const router: Router = Router();
 
@@ -13,5 +14,6 @@ router.get('/', (req, res, next) => {
 });
 
 router.use('/projects', ProjectRoutes);
+router.use('/files', FileRoutes);
 
 export default router;

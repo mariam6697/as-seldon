@@ -13,7 +13,10 @@ export class ProjectService {
 
   public static async get(projectId: string): Promise<Project> {
     try {
-      const project: Project = await ProjectModel.findById(projectId);
+      const project: Project = await ProjectModel.findById(projectId)
+        .populate('mainImage')
+        .populate('extraImages')
+        .lean();
       if (!project) {
         throw CustomError.PROJECT_NOT_FOUND;
       }
@@ -40,7 +43,7 @@ export class ProjectService {
 
   public static async update(projectId: string, projectData: Project): Promise<Project> {
     try {
-      const project: Project = await ProjectModel.findById(projectId);
+      const project: Project = await ProjectModel.findById(projectId).lean();
       if (!project) {
         throw CustomError.PROJECT_NOT_FOUND;
       }
