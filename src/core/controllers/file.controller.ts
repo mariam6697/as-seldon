@@ -25,7 +25,7 @@ export class FileController {
         throw CustomError.REQUIRED_DATA;
       }
       const project: Project = await ProjectService.get(projectId);
-      if (isValidObjectId(project.mainImage)) {
+      if (project.mainImage) {
         await FileService.delete(project.mainImage);
         delete project.mainImage;
       }

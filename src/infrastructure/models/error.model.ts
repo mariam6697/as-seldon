@@ -75,4 +75,11 @@ export default class CustomError extends Error {
     internalCode: 9,
     data: null
   });
+
+  static CATEGORY_NOT_FOUND = new CustomError({
+    message: 'Categoria no encontrada',
+    httpCode: 404,
+    internalCode: 10,
+    data: null
+  });
 }

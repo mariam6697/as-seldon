@@ -15,30 +15,13 @@ const roleAccess = {
       'deleteOwn',
       'deleteAny'
     ],
-    project: [
-      'createOwn',
-      'createAny',
-      'readOwn',
-      'readAny',
-      'updateOwn',
-      'updateAny',
-      'deleteOwn',
-      'deleteAny'
-    ],
+    project: ['createAny', 'readAny', 'updateAny', 'deleteAny'],
+    category: ['createAny', 'readAny', 'updateAny', 'deleteAny'],
     file: ['createAny', 'readAny', 'updateAny', 'deleteAny']
   },
   maintainer: {
     user: ['readOwn', 'updateOwn'],
-    project: [
-      'createOwn',
-      'createAny',
-      'readOwn',
-      'readAny',
-      'updateOwn',
-      'updateAny',
-      'deleteOwn',
-      'deleteAny'
-    ]
+    project: ['createAny', 'readAny', 'updateAny', 'deleteAny']
   }
 };
 

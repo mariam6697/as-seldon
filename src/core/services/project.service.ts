@@ -43,7 +43,7 @@ export class ProjectService {
 
   public static async update(projectId: string, projectData: Project): Promise<Project> {
     try {
-      const project: Project = await ProjectModel.findById(projectId).lean();
+      const project: Project = await ProjectModel.findById(projectId);
       if (!project) {
         throw CustomError.PROJECT_NOT_FOUND;
       }

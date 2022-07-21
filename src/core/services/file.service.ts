@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongoose';
 import { FileModel } from '../../infrastructure/database/schemas/file.schema';
 import CustomError from '../../infrastructure/models/error.model';
 import File from '../models/file.model';
