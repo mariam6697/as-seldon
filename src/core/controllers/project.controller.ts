@@ -31,7 +31,9 @@ export class ProjectController {
   @Get('/{projectId}')
   public static async get(@Path() projectId: string): Promise<any> {
     try {
-      const response: any = await ProjectService.get(projectId);
+      const select: string =
+        '_id name description highlighted semester year categories mainImage extraImages';
+      const response: any = await ProjectService.get(projectId, select);
       return response;
     } catch (error: any) {
       throw error;
@@ -45,7 +47,10 @@ export class ProjectController {
     @Query() search?: string
   ): Promise<any> {
     try {
-      const result: any = await ProjectService.getAll(page, limit, search);
+      const select: string =
+        '_id name description highlighted semester year categories mainImage extraImages';
+      const query: any = { visible: true };
+      const result: any = await ProjectService.getAll(page, limit, query, select, search);
       return result;
     } catch (error: any) {
       throw error;
@@ -55,13 +60,16 @@ export class ProjectController {
   /**
    * Update a project data given its ID.
    */
-   @Put('/{projectId}')
-   public static async update(@Path() projectId: string, @Body() projectData: Project): Promise<any> {
-     try {
-       const response: any = await ProjectService.update(projectId, projectData);
-       return response;
-     } catch (error: any) {
-       throw error;
-     }
-   }
+  @Put('/{projectId}')
+  public static async update(
+    @Path() projectId: string,
+    @Body() projectData: Project
+  ): Promise<any> {
+    try {
+      const response: any = await ProjectService.update(projectId, projectData);
+      return response;
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }

@@ -5,6 +5,7 @@ const ProjectSchema = new Schema<Project>(
   {
     name: { type: String, required: true },
     description: { type: String, required: false },
+    highlighted: { type: Boolean, required: true, default: false },
     visible: { type: Boolean, required: true, default: true },
     semester: { type: String, default: null, enum: ['1', '2'] },
     year: { type: String, required: true },

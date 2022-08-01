@@ -11,11 +11,13 @@ export class ProjectService {
     return newProject;
   }
 
-  public static async get(projectId: string): Promise<Project> {
+  public static async get(projectId: string, select?: string): Promise<Project> {
     try {
-      const project: Project = await ProjectModel.findById(projectId)
+      select = select || '';
+      const project: Project = await ProjectModel.findById(projectId, select)
         .populate('mainImage')
         .populate('extraImages')
+        .populate('categories')
         .lean();
       if (!project) {
         throw CustomError.PROJECT_NOT_FOUND;
@@ -26,16 +28,25 @@ export class ProjectService {
     }
   }
 
-  public static async getAll(page: number, limit: number, search: string): Promise<any> {
+  public static async getAll(
+    page: number,
+    limit: number,
+    query: any,
+    select?: string,
+    search?: string
+  ): Promise<any> {
     const offset: number = (page - 1) * limit;
-    let query: any = {};
+    select = select || '';
     if (search) {
       const searchRegexp: any = { $regex: search, $options: 'i' };
       query['$and'].push({
         $or: [{ name: searchRegexp }, { year: searchRegexp }]
       });
     }
-    const result: any = await ProjectModel.find(query).skip(offset).limit(limit);
+    const result: any = await ProjectModel.find(query, select)
+      .populate('categories')
+      .skip(offset)
+      .limit(limit);
     const projects: Project[] = result;
     const totalItems: number = await ProjectModel.countDocuments(query);
     return { totalItems, limit, page, projects };

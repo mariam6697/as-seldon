@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import { connect, Mongoose } from 'mongoose';
 import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
+import AdminRoutes from '../../admin/routes/index.routes';
 import CoreRoutes from '../../core/routes/index.routes';
 import AuthRoutes from '../../auth/routes/index.routes';
 import { ENV } from '../config/env.config';
@@ -60,6 +61,7 @@ export default class Server {
     app.get(`/api/${apiVersion}`, ServerConfiguration.baseEndpoint);
 
     app.use(`/api/${apiVersion}/core`, CoreRoutes);
+    app.use(`/api/${apiVersion}/admin`, AdminRoutes);
     app.use(`/api/${apiVersion}/auth`, AuthRoutes);
 
     // Swagger setup
