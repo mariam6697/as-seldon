@@ -44,12 +44,16 @@ export class ProjectController {
   public static async getAll(
     @Query() page: number,
     @Query() limit: number,
+    @Query() highlighted?: boolean,
     @Query() search?: string
   ): Promise<any> {
     try {
       const select: string =
-        '_id name description highlighted semester year categories mainImage extraImages';
-      const query: any = { visible: true };
+        '_id name description shortDescription highlighted semester year categories mainImage extraImages';
+      let query: any = { visible: true };
+      if (highlighted) {
+        query.highlighted = highlighted;
+      }
       const result: any = await ProjectService.getAll(page, limit, query, select, search);
       return result;
     } catch (error: any) {

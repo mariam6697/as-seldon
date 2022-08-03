@@ -44,6 +44,7 @@ export class ProjectService {
       });
     }
     const result: any = await ProjectModel.find(query, select)
+      .populate('mainImage')
       .populate('categories')
       .skip(offset)
       .limit(limit);
