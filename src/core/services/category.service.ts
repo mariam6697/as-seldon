@@ -1,9 +1,11 @@
+import generate from 'nanoid/generate';
 import { CategoryModel } from '../../infrastructure/database/schemas/category.schema';
 import CustomError from '../../infrastructure/models/error.model';
 import Category from '../models/category.model';
 
 export class CategoryService {
   public static async create(category: Category): Promise<Category> {
+    category.nanoId = generate('0123456789abcdefghijklmnopqrstuvwxyz', 10);
     const newCategory: Category = await CategoryModel.create(category);
     return newCategory;
   }

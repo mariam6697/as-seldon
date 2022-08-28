@@ -3,6 +3,7 @@ import Project from '../../../core/models/project.model';
 
 const ProjectSchema = new Schema<Project>(
   {
+    nanoId: { type: String, required: true, unique: true, dropDups: true },
     name: { type: String, required: true },
     description: { type: String, required: false },
     shortDescription: { type: String, required: false },

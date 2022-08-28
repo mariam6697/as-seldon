@@ -1,9 +1,11 @@
+import generate from 'nanoid/generate';
 import { ProjectModel } from '../../infrastructure/database/schemas/project.schema';
 import CustomError from '../../infrastructure/models/error.model';
 import Project, { Semester } from '../models/project.model';
 
 export class ProjectService {
   public static async create(project: Project): Promise<Project> {
+    project.nanoId = generate('0123456789abcdefghijklmnopqrstuvwxyz', 10);
     const semester: Semester =
       project.semester == '1' ? Semester.one : project.semester == '2' ? Semester.two : null;
     project.semester = semester;
@@ -11,10 +13,15 @@ export class ProjectService {
     return newProject;
   }
 
-  public static async get(projectId: string, select?: string): Promise<Project> {
+  public static async get(data: {
+    projectId?: string;
+    projectNanoId?: string;
+    select?: string;
+  }): Promise<Project> {
     try {
-      select = select || '';
-      const project: Project = await ProjectModel.findById(projectId, select)
+      data.select = data.select || '';
+      const query: any = data.projectId ? { _id: data.projectId } : { nanoId: data.projectNanoId };
+      const project: Project = await ProjectModel.findOne(query, data.select)
         .populate('mainImage')
         .populate('extraImages')
         .populate('categories')

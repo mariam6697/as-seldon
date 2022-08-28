@@ -26,14 +26,14 @@ export class ProjectController {
   }
 
   /**
-   * Retrieves data from a project given its ID.
+   * Retrieves data from a project given its nano id.
    */
-  @Get('/{projectId}')
-  public static async get(@Path() projectId: string): Promise<any> {
+  @Get('/{projectNanoId}')
+  public static async get(@Path() projectNanoId: string): Promise<any> {
     try {
       const select: string =
-        '_id name description highlighted semester year categories mainImage extraImages';
-      const response: any = await ProjectService.get(projectId, select);
+        'nanoId name description highlighted semester year categories mainImage extraImages';
+      const response: any = await ProjectService.get({ projectNanoId, select });
       return response;
     } catch (error: any) {
       throw error;
@@ -49,7 +49,7 @@ export class ProjectController {
   ): Promise<any> {
     try {
       const select: string =
-        '_id name description shortDescription highlighted semester year categories mainImage extraImages';
+        'nanoId name description shortDescription highlighted semester year categories mainImage extraImages';
       let query: any = { visible: true };
       if (highlighted) {
         query.highlighted = highlighted;

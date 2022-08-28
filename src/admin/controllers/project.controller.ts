@@ -1,7 +1,4 @@
-import { Body, Get, Path, Post, Put, Query, Route, Tags } from 'tsoa';
-import CustomError from '../../infrastructure/models/error.model';
-import MiscUtils from '../../infrastructure/utils/misc.utils';
-import Project from '../../core/models/project.model';
+import { Get, Path, Query, Route, Tags } from 'tsoa';
 import { ProjectService } from '../../core/services/project.service';
 
 /**
@@ -16,7 +13,7 @@ export class ProjectController {
   @Get('/{projectId}')
   public static async get(@Path() projectId: string): Promise<any> {
     try {
-      const response: any = await ProjectService.get(projectId);
+      const response: any = await ProjectService.get({ projectId });
       return response;
     } catch (error: any) {
       throw error;

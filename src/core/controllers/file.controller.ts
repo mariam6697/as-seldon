@@ -24,7 +24,7 @@ export class FileController {
       if (!hasRequiredData) {
         throw CustomError.REQUIRED_DATA;
       }
-      const project: Project = await ProjectService.get(projectId);
+      const project: Project = await ProjectService.get({ projectId });
       if (project.mainImage) {
         await FileService.delete(project.mainImage);
         delete project.mainImage;
@@ -50,7 +50,7 @@ export class FileController {
       if (!hasRequiredData) {
         throw CustomError.REQUIRED_DATA;
       }
-      const project: Project = await ProjectService.get(projectId);
+      const project: Project = await ProjectService.get({ projectId });
       const file: File = await FileService.create(fileData);
 
       const extraImages: string[] = project.extraImages
