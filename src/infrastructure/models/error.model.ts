@@ -82,4 +82,11 @@ export default class CustomError extends Error {
     internalCode: 10,
     data: null
   });
+
+  static EXISTING_REPO = new CustomError({
+    message: 'Ya existe un repositorio de código para este proyecto',
+    httpCode: 400,
+    internalCode: 11,
+    data: null
+  });
 }
