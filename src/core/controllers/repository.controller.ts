@@ -1,7 +1,7 @@
-import { Body, Post, Route, Tags } from 'tsoa';
+import { Body, Delete, Path, Post, Route, Tags } from 'tsoa';
 import CustomError from '../../infrastructure/models/error.model';
-import MiscUtils from '../../infrastructure/utils/misc.utils';
 import Project from '../models/project.model';
+import { RemoteFile } from '../models/remote.model';
 import Repository from '../models/repository.model';
 import { ProjectService } from '../services/project.service';
 import { RepositoryService } from '../services/repository.service';
@@ -12,22 +12,20 @@ export class RepositoryController {
   /**
    * Creates a new project repository in the database.
    */
-  @Post('/')
+  @Post('/:projectId')
   public static async create(
-    @Body() data: { repoData: Repository; files: any[] }
+    @Path() projectId: string,
+    @Body() data: { files: RemoteFile[] }
   ): Promise<Repository> {
     try {
-      const required: string[] = ['project'];
-      const hasRequiredData: boolean = MiscUtils.checkRequired(data.repoData, required);
-      if (!hasRequiredData) {
+      if (!projectId || !data.files) {
         throw CustomError.REQUIRED_DATA;
       }
-
-      const project: Project = await ProjectService.get({ projectId: data.repoData.project });
+      const project: Project = await ProjectService.get({ projectId });
 
       // Check if project has a repository
       const existingRepo: Repository = await RepositoryService.get({
-        projectId: data.repoData.project
+        projectId
       });
 
       if (existingRepo) {
@@ -41,6 +39,30 @@ export class RepositoryController {
       await RepositoryService.updateRemoteRepo(repo, data.files);
 
       return repo;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  /**
+   * Deletes all remote repos (debug)
+   */
+  @Delete('/:repositoryId')
+  public static async remove(@Path() repositoryId: string): Promise<void> {
+    try {
+      await RepositoryService.remove(repositoryId);
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  /**
+   * Deletes all remote repos (debug)
+   */
+  @Delete('/')
+  public static async removeAll(): Promise<void> {
+    try {
+      await RepositoryService.removeAll();
     } catch (error: any) {
       throw error;
     }

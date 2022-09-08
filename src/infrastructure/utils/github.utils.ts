@@ -32,6 +32,12 @@ export default class GitHubUtils {
     return repo;
   }
 
+  public static async getRepos(): Promise<RemoteRepo[]> {
+    const response: any = await octo.repos.listForOrg({ org: organization });
+    const repo: RemoteRepo[] = response.data;
+    return repo;
+  }
+
   public static async createBlob(data: { name: string; base64: string }): Promise<RemoteBlob> {
     const res: any = await octo.git.createBlob({
       owner: organization,
@@ -91,5 +97,12 @@ export default class GitHubUtils {
       force: true
     });
     return response.data;
+  }
+
+  public static async deleteRepo(data: { name: string }): Promise<void> {
+    await octo.request(`DELETE /repos/${organization}/${data.name}`, {
+      owner: organization,
+      repo: data.name
+    });
   }
 }

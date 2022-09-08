@@ -89,4 +89,11 @@ export default class CustomError extends Error {
     internalCode: 11,
     data: null
   });
+
+  static REPO_NOT_FOUND = new CustomError({
+    message: 'El repositorio no existe',
+    httpCode: 404,
+    internalCode: 12,
+    data: null
+  });
 }

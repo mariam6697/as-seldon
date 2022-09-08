@@ -9,6 +9,7 @@ import {
 } from '../models/remote.model';
 import Project from '../models/project.model';
 import Repository from '../models/repository.model';
+import CustomError from '../../infrastructure/models/error.model';
 
 export class RepositoryService {
   public static async create(project: Project): Promise<Repository> {
@@ -38,7 +39,7 @@ export class RepositoryService {
   }
 
   public static async updateRemoteRepo(repo: Repository, files: any[]): Promise<void> {
-    if (files.length > 0) {
+    if (files && files.length > 0) {
       // Check root foolder
       const root: string = files[0].path.split('/')[0];
       const rootFolder: boolean = files.every((file: any) => file.path.split('/')[0] == root);
@@ -83,6 +84,24 @@ export class RepositoryService {
         sha: commit.sha,
         branch: 'main'
       });
+    }
+  }
+
+  public static async remove(repositoryId: string): Promise<void> {
+    const repo: Repository = await RepositoryModel.findById(repositoryId).lean();
+    if (!repo) {
+      throw CustomError.REPO_NOT_FOUND;
+    }
+    await GitHubUtils.deleteRepo({ name: repo.name });
+    await RepositoryModel.deleteOne({ _id: repositoryId });
+  }
+
+  // Just for debug purposes
+  public static async removeAll(): Promise<void> {
+    const repos: RemoteRepo[] = await GitHubUtils.getRepos();
+    for (let i = 0; i < repos.length; i++) {
+      let repo: RemoteRepo = repos[i];
+      await GitHubUtils.deleteRepo({ name: repo.name });
     }
   }
 }
