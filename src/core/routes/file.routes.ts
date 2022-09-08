@@ -14,7 +14,7 @@ router.post(
     try {
       const fileData: File = req.body;
       const projectId: string = req.params.projectId;
-      const file: File = await FileController.addProjectMainImage(fileData, projectId);
+      const file: File = await FileController.addProjectMainImage(projectId, { file: fileData });
       res.status(200).json({ status: 'ok', data: file });
     } catch (error: any) {
       next(error);
@@ -30,7 +30,7 @@ router.post(
     try {
       const fileData: File = req.body;
       const projectId: string = req.params.projectId;
-      const file: File = await FileController.addProjectExtraImage(fileData, projectId);
+      const file: File = await FileController.addProjectExtraImage(projectId, { file: fileData });
       res.status(200).json({ status: 'ok', data: file });
     } catch (error: any) {
       next(error);

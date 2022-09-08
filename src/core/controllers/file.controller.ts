@@ -1,4 +1,3 @@
-import { isValidObjectId } from 'mongoose';
 import { Body, Delete, Path, Post, Route, Tags } from 'tsoa';
 import CustomError from '../../infrastructure/models/error.model';
 import MiscUtils from '../../infrastructure/utils/misc.utils';
@@ -7,20 +6,20 @@ import Project from '../models/project.model';
 import { FileService } from '../services/file.service';
 import { ProjectService } from '../services/project.service';
 
-@Tags('Core')
+@Tags('Core > Files')
 @Route(`core/files`)
 export class FileController {
   /**
-   * Uploads a new main image for a project. Deletes old main image if neeeded.
+   * Uploads a new main image for a project. Deletes old main image if needed
    */
   @Post('/project/main/:projectId')
   public static async addProjectMainImage(
-    @Body() fileData: File,
-    @Path() projectId: string
+    @Path() projectId: string,
+    @Body() data: { file: File }
   ): Promise<File> {
     try {
       const required: string[] = ['extension', 'size', 'type', 'base64'];
-      const hasRequiredData: boolean = MiscUtils.checkRequired(fileData, required);
+      const hasRequiredData: boolean = MiscUtils.checkRequired(data.file, required);
       if (!hasRequiredData) {
         throw CustomError.REQUIRED_DATA;
       }
@@ -29,7 +28,7 @@ export class FileController {
         await FileService.delete(project.mainImage);
         delete project.mainImage;
       }
-      const file: File = await FileService.create(fileData);
+      const file: File = await FileService.create(data.file);
 
       await ProjectService.update(projectId, { ...project, mainImage: file._id });
 
@@ -39,19 +38,22 @@ export class FileController {
     }
   }
 
+  /**
+   * Uploads a new extra image for a project
+   */
   @Post('/project/extra/:projectId')
   public static async addProjectExtraImage(
-    @Body() fileData: File,
-    @Path() projectId: string
+    @Path() projectId: string,
+    @Body() data: { file: File }
   ): Promise<File> {
     try {
       const required: string[] = ['extension', 'size', 'type', 'base64'];
-      const hasRequiredData: boolean = MiscUtils.checkRequired(fileData, required);
+      const hasRequiredData: boolean = MiscUtils.checkRequired(data.file, required);
       if (!hasRequiredData) {
         throw CustomError.REQUIRED_DATA;
       }
       const project: Project = await ProjectService.get({ projectId });
-      const file: File = await FileService.create(fileData);
+      const file: File = await FileService.create(data.file);
 
       const extraImages: string[] = project.extraImages
         ? [...project.extraImages, file._id]

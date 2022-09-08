@@ -13,7 +13,7 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const categoryData: Category = req.body;
-      const category: Category = await CategoryController.create(categoryData);
+      const category: Category = await CategoryController.create({ category: categoryData });
       res.status(200).json({ status: 'ok', data: category });
     } catch (error: any) {
       next(error);
@@ -60,7 +60,9 @@ router.put(
     try {
       const categoryId: string = req.params.categoryId as string;
       const categoryData: Category = req.body;
-      const category: Category = await CategoryController.update(categoryId, categoryData);
+      const category: Category = await CategoryController.update(categoryId, {
+        category: categoryData
+      });
       res.status(200).json({ status: 'ok', data: category });
     } catch (error: any) {
       next(error);

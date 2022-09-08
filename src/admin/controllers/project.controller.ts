@@ -8,7 +8,7 @@ import { ProjectService } from '../../core/services/project.service';
 @Route(`admin/projects`)
 export class ProjectController {
   /**
-   * Retrieves data from a project given its ID.
+   * Retrieves data from a project given its ID
    */
   @Get('/{projectId}')
   public static async get(@Path() projectId: string): Promise<any> {
@@ -20,6 +20,9 @@ export class ProjectController {
     }
   }
 
+  /**
+   * Retrieves a paginated projects list
+   */
   @Get('/')
   public static async getAll(
     @Query() page: number,

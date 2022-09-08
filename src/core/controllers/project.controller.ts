@@ -4,21 +4,21 @@ import MiscUtils from '../../infrastructure/utils/misc.utils';
 import Project from '../models/project.model';
 import { ProjectService } from '../services/project.service';
 
-@Tags('Core')
+@Tags('Core > Projects')
 @Route(`core/projects`)
 export class ProjectController {
   /**
-   * Creates a new project record in the database.
+   * Creates a new project record in the database
    */
   @Post('/')
-  public static async create(@Body() projectData: Project): Promise<Project> {
+  public static async create(@Body() data: { project: Project }): Promise<Project> {
     try {
       const required: string[] = ['name'];
-      const hasRequiredData: boolean = MiscUtils.checkRequired(projectData, required);
+      const hasRequiredData: boolean = MiscUtils.checkRequired(data.project, required);
       if (!hasRequiredData) {
         throw CustomError.REQUIRED_DATA;
       }
-      const project: Project = await ProjectService.create(projectData);
+      const project: Project = await ProjectService.create(data.project);
       return project;
     } catch (error: any) {
       throw error;
@@ -26,7 +26,7 @@ export class ProjectController {
   }
 
   /**
-   * Retrieves data from a project given its nano id.
+   * Retrieves data from a project given its nano ID
    */
   @Get('/{projectNanoId}')
   public static async get(@Path() projectNanoId: string): Promise<any> {
@@ -40,6 +40,9 @@ export class ProjectController {
     }
   }
 
+  /**
+   * Retrieves a paginated projects list
+   */
   @Get('/')
   public static async getAll(
     @Query() page: number,
@@ -62,15 +65,15 @@ export class ProjectController {
   }
 
   /**
-   * Update a project data given its ID.
+   * Update a project data given its ID
    */
   @Put('/{projectId}')
   public static async update(
     @Path() projectId: string,
-    @Body() projectData: Project
+    @Body() data: { project: Project }
   ): Promise<any> {
     try {
-      const response: any = await ProjectService.update(projectId, projectData);
+      const response: any = await ProjectService.update(projectId, data.project);
       return response;
     } catch (error: any) {
       throw error;

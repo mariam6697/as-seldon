@@ -4,21 +4,21 @@ import MiscUtils from '../../infrastructure/utils/misc.utils';
 import Category from '../models/category.model';
 import { CategoryService } from '../services/category.service';
 
-@Tags('Core')
+@Tags('Core > Categories')
 @Route(`core/categories`)
 export class CategoryController {
   /**
-   * Creates a new project category in the database.
+   * Creates a new project category in the database
    */
   @Post('/')
-  public static async create(@Body() categoryData: Category): Promise<Category> {
+  public static async create(@Body() data: { category: Category }): Promise<Category> {
     try {
       const required: string[] = ['name', 'label'];
-      const hasRequiredData: boolean = MiscUtils.checkRequired(categoryData, required);
+      const hasRequiredData: boolean = MiscUtils.checkRequired(data.category, required);
       if (!hasRequiredData) {
         throw CustomError.REQUIRED_DATA;
       }
-      const category: Category = await CategoryService.create(categoryData);
+      const category: Category = await CategoryService.create(data.category);
       return category;
     } catch (error: any) {
       throw error;
@@ -26,7 +26,7 @@ export class CategoryController {
   }
 
   /**
-   * Retrieves data from a category given its ID.
+   * Retrieves data from a category given its ID
    */
   @Get('/{categoryId}')
   public static async get(@Path() categoryId: string): Promise<Category> {
@@ -57,18 +57,18 @@ export class CategoryController {
   }
 
   /**
-   * Update a category data given its ID.
+   * Update a category data given its ID
    */
   @Put('/{categoryId}')
   public static async update(
     @Path() categoryId: string,
-    @Body() categoryData: Category
+    @Body() data: { category: Category }
   ): Promise<any> {
     try {
-      if (!categoryId || !categoryData) {
+      if (!categoryId || !data.category) {
         throw CustomError.REQUIRED_DATA;
       }
-      const response: Category = await CategoryService.update(categoryId, categoryData);
+      const response: Category = await CategoryService.update(categoryId, data.category);
       return response;
     } catch (error: any) {
       throw error;

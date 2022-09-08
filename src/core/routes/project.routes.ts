@@ -13,7 +13,7 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const projectData: Project = req.body;
-      const project: Project = await ProjectController.create(projectData);
+      const project: Project = await ProjectController.create({ project: projectData });
       res.status(200).json({ status: 'ok', data: project });
     } catch (error: any) {
       next(error);
@@ -56,7 +56,7 @@ router.put(
     try {
       const projectId: string = req.params.projectId;
       const projectData: Project = req.body;
-      const project: Project = await ProjectController.update(projectId, projectData);
+      const project: Project = await ProjectController.update(projectId, { project: projectData });
       res.status(200).json({ status: 'ok', data: project });
     } catch (error: any) {
       next(error);

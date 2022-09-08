@@ -25,7 +25,7 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userData: User = req.body;
-      const user: User = await UserController.create(userData);
+      const user: User = await UserController.create({ user: userData });
       res.status(200).json({ status: 'ok', data: user });
     } catch (error: any) {
       next(error);
@@ -83,7 +83,7 @@ router.put(
       if (userId != loggedInUserId && loggedInUserRole != 'admin') {
         throw CustomError.AUTH_ERROR;
       }
-      const user: User = await UserController.update(userId, userData);
+      const user: User = await UserController.update(userId, { user: userData });
       res.status(200).json({ status: 'ok', data: user });
     } catch (error: any) {
       next(error);

@@ -6,11 +6,11 @@ import Repository from '../models/repository.model';
 import { ProjectService } from '../services/project.service';
 import { RepositoryService } from '../services/repository.service';
 
-@Tags('Core')
+@Tags('Core > Repositories')
 @Route(`core/repositories`)
 export class RepositoryController {
   /**
-   * Creates a new project repository in the database.
+   * Creates a new project repository in the database
    */
   @Post('/:projectId')
   public static async create(
@@ -45,7 +45,7 @@ export class RepositoryController {
   }
 
   /**
-   * Deletes all remote repos (debug)
+   * Deletes a repository given its ID
    */
   @Delete('/:repositoryId')
   public static async remove(@Path() repositoryId: string): Promise<void> {

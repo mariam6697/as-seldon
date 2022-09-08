@@ -7,6 +7,9 @@ import { UserService } from '../services/user.service';
 @Tags('Auth')
 @Route(`auth/users`)
 export class UserController {
+  /**
+   * Allows to retrieve an auth token for a certain user
+   */
   @Post('/login')
   public static async login(@Body() data: { email: string; password: string }): Promise<any> {
     try {
@@ -24,21 +27,27 @@ export class UserController {
     }
   }
 
+  /**
+   * Creates a new user in the database
+   */
   @Post('/')
-  public static async create(@Body() userData: User): Promise<User> {
+  public static async create(@Body() data: { user: User }): Promise<User> {
     try {
       const required: string[] = ['email', 'password', 'role', 'surname', 'name'];
-      const hasRequiredData: boolean = MiscUtils.checkRequired(userData, required);
+      const hasRequiredData: boolean = MiscUtils.checkRequired(data.user, required);
       if (!hasRequiredData) {
         throw CustomError.REQUIRED_DATA;
       }
-      const user: User = await UserService.create(userData);
+      const user: User = await UserService.create(data.user);
       return user;
     } catch (error: any) {
       throw error;
     }
   }
 
+  /**
+   * Retrieves a user data given its ID
+   */
   @Get('/{userId}')
   public static async get(@Path() userId: string): Promise<any> {
     try {
@@ -49,6 +58,9 @@ export class UserController {
     }
   }
 
+  /**
+   * Retrieves a paginated users list
+   */
   @Get('/')
   public static async getAll(
     @Query() page: number,
@@ -63,16 +75,22 @@ export class UserController {
     }
   }
 
+  /**
+   * Allows to update a user record
+   */
   @Put('/{userId}')
-  public static async update(@Path() userId: string, @Body() userData: User): Promise<User> {
+  public static async update(@Path() userId: string, @Body() data: { user: User }): Promise<User> {
     try {
-      const response: any = await UserService.update(userId, userData);
+      const response: any = await UserService.update(userId, data.user);
       return response;
     } catch (error: any) {
       throw error;
     }
   }
 
+  /**
+   * Deletes a certain user given its ID
+   */
   @Delete('/{userId}')
   public static async delete(@Path() userId: string): Promise<any> {
     try {
