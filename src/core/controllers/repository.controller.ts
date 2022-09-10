@@ -45,6 +45,23 @@ export class RepositoryController {
   }
 
   /**
+   * Gets a repository by its project ID
+   */
+  @Delete('/:projectId')
+  public static async getByProjectId(@Path() projectId: string): Promise<Repository[]> {
+    try {
+      const project: Project = await ProjectService.get({ projectId });
+      const repos: Repository[] = await RepositoryService.getByProject({ projectId: project._id });
+      if (!repos) {
+        return [];
+      }
+      return repos;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  /**
    * Deletes a repository given its ID
    */
   @Delete('/:repositoryId')

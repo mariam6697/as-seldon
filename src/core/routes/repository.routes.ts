@@ -23,14 +23,15 @@ router.post(
   }
 );
 
-router.delete(
-  '/',
+router.get(
+  '/project/:projectId',
   AuthenticationMiddleware.allowIfLoggedIn,
-  AuthenticationMiddleware.grantAccess('repository', 'deleteAny'),
+  AuthenticationMiddleware.grantAccess('repository', 'readAny'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await RepositoryController.removeAll();
-      res.status(200).json({ status: 'ok' });
+      const projectId: string = req.params.projectId.toString();
+      const repos: Repository[] = await RepositoryController.getByProjectId(projectId);
+      res.status(200).json({ status: 'ok', data: repos });
     } catch (error: any) {
       next(error);
     }
@@ -40,11 +41,25 @@ router.delete(
 router.delete(
   '/:repositoryId',
   AuthenticationMiddleware.allowIfLoggedIn,
-  AuthenticationMiddleware.grantAccess('repository', 'deleteAll'),
+  AuthenticationMiddleware.grantAccess('repository', 'deleteAny'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const repositoryId: string = req.params.repositoryId;
       await RepositoryController.remove(repositoryId);
+      res.status(200).json({ status: 'ok' });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+);
+
+router.delete(
+  '/',
+  AuthenticationMiddleware.allowIfLoggedIn,
+  AuthenticationMiddleware.grantAccess('repository', 'deleteAll'),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await RepositoryController.removeAll();
       res.status(200).json({ status: 'ok' });
     } catch (error: any) {
       next(error);

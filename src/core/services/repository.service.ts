@@ -29,6 +29,11 @@ export class RepositoryService {
     return newRepo;
   }
 
+  public static async getByProject(data: { projectId: string }): Promise<Repository[]> {
+    const repos: Repository[] = await RepositoryModel.find({ project: data.projectId });
+    return repos;
+  }
+
   public static async get(data: {
     projectId?: string;
     repositoryId?: string;
