@@ -1,6 +1,5 @@
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { AuthenticationMiddleware } from '../../infrastructure/middleware/authentication.middleware';
-import { NextFunction, Request, Response } from 'express';
 import File from '../models/file.model';
 import { FileController } from '../controllers/file.controller';
 

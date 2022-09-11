@@ -1,7 +1,6 @@
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { AuthenticationMiddleware } from '../../infrastructure/middleware/authentication.middleware';
 import { ProjectController } from '../controllers/project.controller';
-import { NextFunction, Request, Response } from 'express';
 import Project from '../models/project.model';
 
 const router: Router = Router();
@@ -35,11 +34,8 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const page: number = req.query.page ? parseInt(req.query.page as string) : 1;
     const limit: number = req.query.limit ? parseInt(req.query.limit as string) : 10;
-    const highlighted: boolean = req.query.highlighted
-      ? req.query.highlighted === 'true'
-        ? true
-        : false
-      : null;
+    const highlight: string = req.query.highlighted ? req.query.highlighted.toString() : null;
+    const highlighted: boolean = highlight === 'true' ? true : false;
     const search: string = req.query.search ? (req.query.search as string) : null;
     const result: any = await ProjectController.getAll(page, limit, highlighted, search);
     res.status(200).json({ status: 'ok', data: result });

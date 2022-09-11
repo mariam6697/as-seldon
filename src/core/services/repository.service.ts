@@ -43,7 +43,7 @@ export class RepositoryService {
     return repo;
   }
 
-  public static async updateRemoteRepo(repo: Repository, files: any[]): Promise<void> {
+  public static async updateRemoteRepo(repo: Repository, files: RemoteFile[]): Promise<void> {
     if (files && files.length > 0) {
       // Check root foolder
       const root: string = files[0].path.split('/')[0];
@@ -57,9 +57,9 @@ export class RepositoryService {
 
       // Create blobs
       let treeData: any[] = [];
-      for (let i = 0; i < files.length; i++) {
-        const file: RemoteFile = files[i];
-        const blob: RemoteBlob = await GitHubUtils.createBlob({
+
+      for (let file of files) {
+        let blob: RemoteBlob = await GitHubUtils.createBlob({
           name: repo.name,
           base64: file.fileData.base64
         });
@@ -104,8 +104,7 @@ export class RepositoryService {
   // Just for debug purposes
   public static async removeAll(): Promise<void> {
     const repos: RemoteRepo[] = await GitHubUtils.getRepos();
-    for (let i = 0; i < repos.length; i++) {
-      let repo: RemoteRepo = repos[i];
+    for (let repo of repos) {
       await GitHubUtils.deleteRepo({ name: repo.name });
     }
   }

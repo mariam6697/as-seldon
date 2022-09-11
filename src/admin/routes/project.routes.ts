@@ -1,7 +1,6 @@
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { AuthenticationMiddleware } from '../../infrastructure/middleware/authentication.middleware';
 import { ProjectController } from '../controllers/project.controller';
-import { NextFunction, Request, Response } from 'express';
 import Project from '../../core/models/project.model';
 
 const router: Router = Router();

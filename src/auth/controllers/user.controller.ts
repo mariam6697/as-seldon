@@ -1,4 +1,4 @@
-import { Body, Delete, Get, Header, Path, Post, Put, Query, Route, Tags } from 'tsoa';
+import { Body, Delete, Get, Path, Post, Put, Query, Route, Tags } from 'tsoa';
 import CustomError from '../../infrastructure/models/error.model';
 import MiscUtils from '../../infrastructure/utils/misc.utils';
 import User from '../models/user.model';

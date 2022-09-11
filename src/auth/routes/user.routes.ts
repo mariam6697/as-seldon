@@ -1,6 +1,5 @@
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { AuthenticationMiddleware } from '../../infrastructure/middleware/authentication.middleware';
-import { NextFunction, Request, Response } from 'express';
 import { UserController } from '../controllers/user.controller';
 import User from '../models/user.model';
 import CustomError from '../../infrastructure/models/error.model';

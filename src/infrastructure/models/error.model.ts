@@ -96,4 +96,11 @@ export default class CustomError extends Error {
     internalCode: 12,
     data: null
   });
+
+  static NOT_VALID_VALUE = new CustomError({
+    message: 'Se ingreso un valor no válido para uno de los campos',
+    httpCode: 400,
+    internalCode: 13,
+    data: null
+  });
 }

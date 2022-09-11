@@ -6,8 +6,14 @@ import Project, { Semester } from '../models/project.model';
 export class ProjectService {
   public static async create(project: Project): Promise<Project> {
     project.nanoId = generate('0123456789abcdefghijklmnopqrstuvwxyz', 10);
-    const semester: Semester =
-      project.semester == '1' ? Semester.one : project.semester == '2' ? Semester.two : null;
+    let semester: Semester = null;
+    if (project.semester == '1') {
+      semester = Semester.one;
+    } else if (project.semester == '2') {
+      semester = Semester.two;
+    } else {
+      throw CustomError.NOT_VALID_VALUE;
+    }
     project.semester = semester;
     const newProject: Project = await ProjectModel.create(project);
     return newProject;
