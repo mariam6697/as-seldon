@@ -13,7 +13,7 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const files: RemoteFile[] = req.body.files;
-      const projectId: string = req.params.projectId;
+      const projectId: string = req.params.projectId.toString();
       const repo: Repository = await RepositoryController.create(projectId, { files });
       res.status(200).json({ status: 'ok', data: repo });
     } catch (error: any) {
@@ -43,7 +43,7 @@ router.delete(
   AuthenticationMiddleware.grantAccess('repository', 'deleteAny'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const repositoryId: string = req.params.repositoryId;
+      const repositoryId: string = req.params.repositoryId.toString();
       await RepositoryController.remove(repositoryId);
       res.status(200).json({ status: 'ok' });
     } catch (error: any) {

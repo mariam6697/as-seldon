@@ -8,8 +8,8 @@ const router: Router = Router();
 
 router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const email: string = req.body.email;
-    const password: string = req.body.password;
+    const email: string = req.body.email.toString();
+    const password: string = req.body.password.toString();
     const response: any = await UserController.login({ email, password });
     res.status(200).json({ status: 'ok', data: response });
   } catch (error: any) {
@@ -23,8 +23,15 @@ router.post(
   AuthenticationMiddleware.grantAccess('user', 'createAny'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userData: User = req.body;
-      const user: User = await UserController.create({ user: userData });
+      const userData: User = {
+        role: req.body.user.role.toString(),
+        email: req.body.user.email.toString(),
+        name: req.body.user.name.toString(),
+        surname: req.body.user.surname.toString(),
+        password: req.body.user.password.toString(),
+        enabled: true
+      };
+      const user: User = await UserController.create(userData);
       res.status(200).json({ status: 'ok', data: user });
     } catch (error: any) {
       next(error);
@@ -77,12 +84,18 @@ router.put(
     try {
       const loggedInUserId: string = res.locals.loggedInUser._id;
       const loggedInUserRole: string = res.locals.loggedInUser.role;
-      const userId: string = req.params.userId;
-      const userData: User = req.body;
+      const userId: string = req.params.userId.toString();
+      const userData: User = {
+        role: req.body.user.role.toString(),
+        email: req.body.user.email.toString(),
+        name: req.body.user.name.toString(),
+        surname: req.body.user.surname.toString(),
+        enabled: req.body.user.enabled.toString() == 'true' ? true : false
+      };
       if (userId != loggedInUserId && loggedInUserRole != 'admin') {
         throw CustomError.AUTH_ERROR;
       }
-      const user: User = await UserController.update(userId, { user: userData });
+      const user: User = await UserController.update(userId, userData);
       res.status(200).json({ status: 'ok', data: user });
     } catch (error: any) {
       next(error);

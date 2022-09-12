@@ -11,14 +11,14 @@ export class CategoryController {
    * Creates a new project category in the database
    */
   @Post('/')
-  public static async create(@Body() data: { category: Category }): Promise<Category> {
+  public static async create(@Body() categoryData: Category): Promise<Category> {
     try {
       const required: string[] = ['name', 'label'];
-      const hasRequiredData: boolean = MiscUtils.checkRequired(data.category, required);
+      const hasRequiredData: boolean = MiscUtils.checkRequired(categoryData, required);
       if (!hasRequiredData) {
         throw CustomError.REQUIRED_DATA;
       }
-      const category: Category = await CategoryService.create(data.category);
+      const category: Category = await CategoryService.create(categoryData);
       return category;
     } catch (error: any) {
       throw error;
@@ -62,14 +62,14 @@ export class CategoryController {
   @Put('/{categoryId}')
   public static async update(
     @Path() categoryId: string,
-    @Body() data: { category: Category }
-  ): Promise<any> {
+    @Body() categoryData: Category
+  ): Promise<Category> {
     try {
-      if (!categoryId || !data.category) {
+      if (!categoryId || !categoryData) {
         throw CustomError.REQUIRED_DATA;
       }
-      const response: Category = await CategoryService.update(categoryId, data.category);
-      return response;
+      const category: Category = await CategoryService.update(categoryId, categoryData);
+      return category;
     } catch (error: any) {
       throw error;
     }

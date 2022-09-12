@@ -1,6 +1,6 @@
 export default interface Category {
   _id?: string;
-  nanoId: string;
+  nanoId?: string;
   name: string;
   label: string;
   description: string;

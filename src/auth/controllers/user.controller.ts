@@ -31,15 +31,15 @@ export class UserController {
    * Creates a new user in the database
    */
   @Post('/')
-  public static async create(@Body() data: { user: User }): Promise<User> {
+  public static async create(@Body() user: User): Promise<User> {
     try {
       const required: string[] = ['email', 'password', 'role', 'surname', 'name'];
-      const hasRequiredData: boolean = MiscUtils.checkRequired(data.user, required);
+      const hasRequiredData: boolean = MiscUtils.checkRequired(user, required);
       if (!hasRequiredData) {
         throw CustomError.REQUIRED_DATA;
       }
-      const user: User = await UserService.create(data.user);
-      return user;
+      const userData: User = await UserService.create(user);
+      return userData;
     } catch (error: any) {
       throw error;
     }
@@ -79,9 +79,9 @@ export class UserController {
    * Allows to update a user record
    */
   @Put('/{userId}')
-  public static async update(@Path() userId: string, @Body() data: { user: User }): Promise<User> {
+  public static async update(@Path() userId: string, @Body() user: User): Promise<User> {
     try {
-      const response: any = await UserService.update(userId, data.user);
+      const response: User = await UserService.update(userId, user);
       return response;
     } catch (error: any) {
       throw error;
@@ -92,7 +92,7 @@ export class UserController {
    * Deletes a certain user given its ID
    */
   @Delete('/{userId}')
-  public static async delete(@Path() userId: string): Promise<any> {
+  public static async delete(@Path() userId: string): Promise<void> {
     try {
       await UserService.delete(userId);
     } catch (error: any) {

@@ -1,13 +1,13 @@
 export default interface Project {
   _id?: string;
-  nanoId: string;
+  nanoId?: string;
   name: string;
-  description?: string;
+  description: string;
   shortDescription?: string;
-  highlighted?: boolean;
-  visible?: boolean;
-  semester?: Semester;
-  year?: string;
+  highlighted: boolean;
+  visible: boolean;
+  semester: Semester;
+  year: string;
   categories?: string[];
   updates?: string[];
   mainImage?: string;

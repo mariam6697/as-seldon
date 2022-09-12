@@ -11,9 +11,14 @@ router.post(
   AuthenticationMiddleware.grantAccess('project', 'updateAny'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const fileData: File = req.body;
-      const projectId: string = req.params.projectId;
-      const file: File = await FileController.addProjectMainImage(projectId, { file: fileData });
+      const fileData: File = {
+        extension: req.body.extension.toString(),
+        size: parseInt(req.body.size.toString()),
+        type: req.body.type.toString(),
+        base64: req.body.base64.toString()
+      };
+      const projectId: string = req.params.projectId.toString();
+      const file: File = await FileController.addProjectMainImage(projectId, fileData);
       res.status(200).json({ status: 'ok', data: file });
     } catch (error: any) {
       next(error);
@@ -27,9 +32,14 @@ router.post(
   AuthenticationMiddleware.grantAccess('project', 'updateAny'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const fileData: File = req.body;
-      const projectId: string = req.params.projectId;
-      const file: File = await FileController.addProjectExtraImage(projectId, { file: fileData });
+      const fileData: File = {
+        extension: req.body.extension.toString(),
+        size: parseInt(req.body.size.toString()),
+        type: req.body.type.toString(),
+        base64: req.body.base64.toString()
+      };
+      const projectId: string = req.params.projectId.toString();
+      const file: File = await FileController.addProjectExtraImage(projectId, fileData);
       res.status(200).json({ status: 'ok', data: file });
     } catch (error: any) {
       next(error);
@@ -43,7 +53,7 @@ router.delete(
   AuthenticationMiddleware.grantAccess('file', 'deleteAny'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const fileId: string = req.params.fileId;
+      const fileId: string = req.params.fileId.toString();
       await FileController.delete(fileId);
       res.status(200).json({ status: 'ok' });
     } catch (error: any) {

@@ -11,14 +11,14 @@ export class ProjectController {
    * Creates a new project record in the database
    */
   @Post('/')
-  public static async create(@Body() data: { project: Project }): Promise<Project> {
+  public static async create(@Body() projectData: Project): Promise<Project> {
     try {
       const required: string[] = ['name'];
-      const hasRequiredData: boolean = MiscUtils.checkRequired(data.project, required);
+      const hasRequiredData: boolean = MiscUtils.checkRequired(projectData, required);
       if (!hasRequiredData) {
         throw CustomError.REQUIRED_DATA;
       }
-      const project: Project = await ProjectService.create(data.project);
+      const project: Project = await ProjectService.create(projectData);
       return project;
     } catch (error: any) {
       throw error;
@@ -70,10 +70,10 @@ export class ProjectController {
   @Put('/{projectId}')
   public static async update(
     @Path() projectId: string,
-    @Body() data: { project: Project }
-  ): Promise<any> {
+    @Body() project: Project
+  ): Promise<Project> {
     try {
-      const response: any = await ProjectService.update(projectId, data.project);
+      const response: Project = await ProjectService.update(projectId, project);
       return response;
     } catch (error: any) {
       throw error;

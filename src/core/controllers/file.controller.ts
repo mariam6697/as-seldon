@@ -15,11 +15,11 @@ export class FileController {
   @Post('/project/main/:projectId')
   public static async addProjectMainImage(
     @Path() projectId: string,
-    @Body() data: { file: File }
+    @Body() fileData: File
   ): Promise<File> {
     try {
       const required: string[] = ['extension', 'size', 'type', 'base64'];
-      const hasRequiredData: boolean = MiscUtils.checkRequired(data.file, required);
+      const hasRequiredData: boolean = MiscUtils.checkRequired(fileData, required);
       if (!hasRequiredData) {
         throw CustomError.REQUIRED_DATA;
       }
@@ -28,7 +28,7 @@ export class FileController {
         await FileService.delete(project.mainImage);
         delete project.mainImage;
       }
-      const file: File = await FileService.create(data.file);
+      const file: File = await FileService.create(fileData);
 
       await ProjectService.update(projectId, { ...project, mainImage: file._id });
 
@@ -44,16 +44,16 @@ export class FileController {
   @Post('/project/extra/:projectId')
   public static async addProjectExtraImage(
     @Path() projectId: string,
-    @Body() data: { file: File }
+    @Body() fileData: File
   ): Promise<File> {
     try {
       const required: string[] = ['extension', 'size', 'type', 'base64'];
-      const hasRequiredData: boolean = MiscUtils.checkRequired(data.file, required);
+      const hasRequiredData: boolean = MiscUtils.checkRequired(fileData, required);
       if (!hasRequiredData) {
         throw CustomError.REQUIRED_DATA;
       }
       const project: Project = await ProjectService.get({ projectId });
-      const file: File = await FileService.create(data.file);
+      const file: File = await FileService.create(fileData);
 
       const extraImages: string[] = project.extraImages
         ? [...project.extraImages, file._id]
