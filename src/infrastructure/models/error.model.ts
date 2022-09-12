@@ -50,7 +50,7 @@ export default class CustomError extends Error {
 
   static REQUIRED_DATA = new CustomError({
     message: 'Faltan parámetros requeridos',
-    httpCode: 401,
+    httpCode: 400,
     internalCode: 6,
     data: null
   });
