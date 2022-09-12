@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { AuthenticationMiddleware } from '../../infrastructure/middleware/authentication.middleware';
+import Parser from '../../infrastructure/utils/parser.utils';
 import { CategoryController } from '../controllers/category.controller';
 import Category from '../models/category.model';
 
@@ -11,13 +12,7 @@ router.post(
   AuthenticationMiddleware.grantAccess('category', 'createAny'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const categoryData: Category = {
-        name: req.body.name.toString(),
-        label: req.body.label.toString(),
-        description: req.body.description.toString(),
-        textHexColor: req.body.textHexColor.toString(),
-        backgroundHexColor: req.body.backgroundHexColor.toString()
-      };
+      const categoryData: Category = Parser.parseCategory(req.body);
       const category: Category = await CategoryController.create(categoryData);
       res.status(200).json({ status: 'ok', data: category });
     } catch (error: any) {
@@ -63,8 +58,8 @@ router.put(
   AuthenticationMiddleware.grantAccess('category', 'updateAny'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const categoryId: string = req.params.categoryId as string;
-      const categoryData: Category = req.body;
+      const categoryId: string = req.params.categoryId.toString();
+      const categoryData: Category = Parser.parseCategory(req.body);
       const category: Category = await CategoryController.update(categoryId, categoryData);
       res.status(200).json({ status: 'ok', data: category });
     } catch (error: any) {

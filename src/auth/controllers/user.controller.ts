@@ -1,6 +1,4 @@
 import { Body, Delete, Get, Path, Post, Put, Query, Route, Tags } from 'tsoa';
-import CustomError from '../../infrastructure/models/error.model';
-import MiscUtils from '../../infrastructure/utils/misc.utils';
 import User from '../models/user.model';
 import { UserService } from '../services/user.service';
 
@@ -15,11 +13,6 @@ export class UserController {
     try {
       const email: string = data.email;
       const password: string = data.password;
-      const required: string[] = ['email', 'password'];
-      const hasRequiredData: boolean = MiscUtils.checkRequired({ email, password }, required);
-      if (!hasRequiredData) {
-        throw CustomError.REQUIRED_DATA;
-      }
       const response: any = await UserService.login(email, password);
       return response;
     } catch (error: any) {
@@ -33,11 +26,6 @@ export class UserController {
   @Post('/')
   public static async create(@Body() user: User): Promise<User> {
     try {
-      const required: string[] = ['email', 'password', 'role', 'surname', 'name'];
-      const hasRequiredData: boolean = MiscUtils.checkRequired(user, required);
-      if (!hasRequiredData) {
-        throw CustomError.REQUIRED_DATA;
-      }
       const userData: User = await UserService.create(user);
       return userData;
     } catch (error: any) {

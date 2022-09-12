@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { AuthenticationMiddleware } from '../../infrastructure/middleware/authentication.middleware';
+import Parser from '../../infrastructure/utils/parser.utils';
 import { ProjectController } from '../controllers/project.controller';
 import Project from '../models/project.model';
 
@@ -11,15 +12,7 @@ router.post(
   AuthenticationMiddleware.grantAccess('project', 'createAny'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const projectData: Project = {
-        name: req.body.name.toString(),
-        description: req.body.description.toString(),
-        shortDescription: req.body.shortDescription.toString(),
-        highlighted: req.body.highlighted.toString() == 'true' ? true : false,
-        visible: req.body.visible.toString() == 'true' ? true : false,
-        semester: req.body.semester.toString(),
-        year: req.body.year.toString()
-      };
+      const projectData: Project = Parser.parseProject(req.body);
       const project: Project = await ProjectController.create(projectData);
       res.status(200).json({ status: 'ok', data: project });
     } catch (error: any) {
@@ -59,15 +52,7 @@ router.put(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const projectId: string = req.params.projectId.toString();
-      const projectData: Project = {
-        name: req.body.name.toString(),
-        description: req.body.description.toString(),
-        shortDescription: req.body.shortDescription.toString(),
-        highlighted: req.body.highlighted.toString() == 'true' ? true : false,
-        visible: req.body.visible.toString() == 'true' ? true : false,
-        semester: req.body.semester.toString(),
-        year: req.body.year.toString()
-      };
+      const projectData: Project = Parser.parseProject(req.body);
       const project: Project = await ProjectController.update(projectId, projectData);
       res.status(200).json({ status: 'ok', data: project });
     } catch (error: any) {

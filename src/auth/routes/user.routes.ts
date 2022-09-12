@@ -3,11 +3,15 @@ import { AuthenticationMiddleware } from '../../infrastructure/middleware/authen
 import { UserController } from '../controllers/user.controller';
 import User from '../models/user.model';
 import CustomError from '../../infrastructure/models/error.model';
+import MiscUtils from '../../infrastructure/utils/misc.utils';
+import Parser from '../../infrastructure/utils/parser.utils';
 
 const router: Router = Router();
 
 router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const loginFields: string[] = ['email', 'password'];
+    MiscUtils.hasRequiredData(req.body, loginFields);
     const email: string = req.body.email.toString();
     const password: string = req.body.password.toString();
     const response: any = await UserController.login({ email, password });
@@ -23,16 +27,14 @@ router.post(
   AuthenticationMiddleware.grantAccess('user', 'createAny'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userData: User = {
-        role: req.body.user.role.toString(),
-        email: req.body.user.email.toString(),
-        name: req.body.user.name.toString(),
-        surname: req.body.user.surname.toString(),
-        password: req.body.user.password.toString(),
-        enabled: true
-      };
-      const user: User = await UserController.create(userData);
-      res.status(200).json({ status: 'ok', data: user });
+      const userFields: string[] = ['role', 'email', 'name', 'surname', 'password'];
+      let userData: User = req.body;
+      MiscUtils.hasRequiredData(userData, userFields);
+      userData.enabled = true;
+      let user: User = Parser.parseUser(userData);
+      user.password = userData.password.toString();
+      const response: User = await UserController.create(user);
+      res.status(200).json({ status: 'ok', data: response });
     } catch (error: any) {
       next(error);
     }
@@ -84,14 +86,10 @@ router.put(
     try {
       const loggedInUserId: string = res.locals.loggedInUser._id;
       const loggedInUserRole: string = res.locals.loggedInUser.role;
+      const userFields: string[] = ['role', 'email', 'name', 'surname', 'enabled'];
+      MiscUtils.hasRequiredData(req.body, userFields);
       const userId: string = req.params.userId.toString();
-      const userData: User = {
-        role: req.body.user.role.toString(),
-        email: req.body.user.email.toString(),
-        name: req.body.user.name.toString(),
-        surname: req.body.user.surname.toString(),
-        enabled: req.body.user.enabled.toString() == 'true' ? true : false
-      };
+      const userData: User = Parser.parseUser(req.body);
       if (userId != loggedInUserId && loggedInUserRole != 'admin') {
         throw CustomError.AUTH_ERROR;
       }
