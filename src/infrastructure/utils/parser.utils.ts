@@ -1,7 +1,7 @@
 import User from '../../auth/models/user.model';
 import Category from '../../core/models/category.model';
 import File from '../../core/models/file.model';
-import Project from '../../core/models/project.model';
+import Project, { ProjectUpdate } from '../../core/models/project.model';
 import MiscUtils from './misc.utils';
 
 export default class Parser {
@@ -38,6 +38,17 @@ export default class Parser {
       year: object.year.toString()
     };
     return project;
+  }
+
+  public static parseProjectUpdate(object: any): ProjectUpdate {
+    const projectUpdateFields: string[] = ['title', 'description', 'date'];
+    MiscUtils.hasRequiredData(object, projectUpdateFields);
+    const projectUpdate: ProjectUpdate = {
+      title: object.title.toString(),
+      description: object.description.toString(),
+      date: new Date(object.date.toString())
+    };
+    return projectUpdate;
   }
 
   public static parseUser(object: any): User {

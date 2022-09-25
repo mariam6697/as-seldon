@@ -19,6 +19,7 @@ export interface ProjectUpdate {
   title: string;
   description: string;
   date: Date;
+  project?: string;
 }
 
 export enum Semester {

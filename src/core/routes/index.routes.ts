@@ -4,6 +4,7 @@ import ProjectRoutes from './project.routes';
 import FileRoutes from './file.routes';
 import CategoryRoutes from './category.routes';
 import RepositoryRoutes from './repository.routes';
+import ProjectUpdateRoutes from './project-update.routes';
 
 const router: Router = Router();
 
@@ -19,5 +20,6 @@ router.use('/projects', ProjectRoutes);
 router.use('/files', FileRoutes);
 router.use('/categories', CategoryRoutes);
 router.use('/repositories', RepositoryRoutes);
+router.use('/projects-updates', ProjectUpdateRoutes);
 
 export default router;
