@@ -25,16 +25,21 @@ router.post(
   }
 );
 
-router.get('/:projectId', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const projectId: string = req.params.projectId.toString();
-    const page: number = req.query.page ? parseInt(req.query.page.toString()) : 1;
-    const limit: number = req.query.limit ? parseInt(req.query.limit.toString()) : 10;
-    const result: any = await ProjectUpdateController.getByProjectId(projectId, page, limit);
-    res.status(200).json({ status: 'ok', data: result });
-  } catch (error: any) {
-    next(error);
+router.get(
+  '/:projectId',
+  AuthenticationMiddleware.allowIfLoggedIn,
+  AuthenticationMiddleware.grantAccess('project', 'readAny'),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId: string = req.params.projectId.toString();
+      const page: number = req.query.page ? parseInt(req.query.page.toString()) : 1;
+      const limit: number = req.query.limit ? parseInt(req.query.limit.toString()) : 10;
+      const result: any = await ProjectUpdateController.getByProjectId(projectId, page, limit);
+      res.status(200).json({ status: 'ok', data: result });
+    } catch (error: any) {
+      next(error);
+    }
   }
-});
+);
 
 export default router;

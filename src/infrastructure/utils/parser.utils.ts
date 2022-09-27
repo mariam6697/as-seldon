@@ -2,6 +2,7 @@ import User from '../../auth/models/user.model';
 import Category from '../../core/models/category.model';
 import File from '../../core/models/file.model';
 import Project, { ProjectUpdate } from '../../core/models/project.model';
+import ResourceLink from '../../core/models/resource-link.model';
 import MiscUtils from './misc.utils';
 
 export default class Parser {
@@ -81,5 +82,17 @@ export default class Parser {
       backgroundHexColor: object.backgroundHexColor.toString()
     };
     return category;
+  }
+
+  public static parseResourceLink(object: any): ResourceLink {
+    const linkFields: string[] = ['title', 'url', 'public', 'type'];
+    MiscUtils.hasRequiredData(object, linkFields);
+    const link: ResourceLink = {
+      title: object.title.toString(),
+      url: object.url.toString(),
+      public: object.public.toString() == 'true' ? true : false,
+      type: object.type.toString()
+    };
+    return link;
   }
 }

@@ -9,7 +9,6 @@ export default interface Project {
   semester: Semester;
   year: string;
   categories?: string[];
-  updates?: string[];
   mainImage?: string;
   extraImages?: string[];
 }
