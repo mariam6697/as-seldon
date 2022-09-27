@@ -37,4 +37,38 @@ router.get('/:projectId', async (req: Request, res: Response, next: NextFunction
   }
 });
 
+router.put(
+  '/:resourceLinkId',
+  AuthenticationMiddleware.allowIfLoggedIn,
+  AuthenticationMiddleware.grantAccess('resourceLink', 'updateAny'),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const resourceLinkId: string = req.params.resourceLinkId.toString();
+      const resourceLinkData: ResourceLink = Parser.parseResourceLink(req.body);
+      const resourceLink: ResourceLink = await ResourceLinkController.update(
+        resourceLinkId,
+        resourceLinkData
+      );
+      res.status(200).json({ status: 'ok', data: resourceLink });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+);
+
+router.delete(
+  '/:resourceLinkId',
+  AuthenticationMiddleware.allowIfLoggedIn,
+  AuthenticationMiddleware.grantAccess('resourceLink', 'deleteAny'),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const resourceLinkId: string = req.params.resourceLinkId.toString();
+      await ResourceLinkController.remove(resourceLinkId);
+      res.status(200).json({ status: 'ok' });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+);
+
 export default router;

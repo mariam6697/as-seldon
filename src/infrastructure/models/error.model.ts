@@ -103,4 +103,11 @@ export default class CustomError extends Error {
     internalCode: 13,
     data: null
   });
+
+  static LINK_NOT_FOUND = new CustomError({
+    message: 'El recurso solicitado no existe',
+    httpCode: 404,
+    internalCode: 12,
+    data: null
+  });
 }

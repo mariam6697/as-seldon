@@ -1,4 +1,4 @@
-import { Body, Get, Path, Post, Query, Route, Tags } from 'tsoa';
+import { Body, Delete, Get, Path, Post, Put, Query, Route, Tags } from 'tsoa';
 import Project from '../models/project.model';
 import { ResourceLinkService } from '../services/resource-link.service';
 import { ProjectService } from '../services/project.service';
@@ -28,7 +28,7 @@ export class ResourceLinkController {
   }
 
   /**
-   * Get
+   * Get all resources links for certain project
    */
   @Get('/{projectId}')
   public static async getByProjectId(
@@ -40,6 +40,39 @@ export class ResourceLinkController {
       const project: Project = await ProjectService.get({ projectId });
       const result: any = await ResourceLinkService.getByProjectId(project._id, page, limit);
       return result;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  /**
+   * Updates a resource link
+   */
+  @Put('/{resourceLinkId}')
+  public static async update(
+    @Path() resourceLinkId: string,
+    @Body() resourceLinkData: ResourceLink
+  ): Promise<ResourceLink> {
+    try {
+      const resourceLink: ResourceLink = await ResourceLinkService.get(resourceLinkId);
+      const updatedLink: ResourceLink = await ResourceLinkService.update(
+        resourceLink._id,
+        resourceLinkData
+      );
+      return updatedLink;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  /**
+   * Deletes a resource link
+   */
+  @Delete('/{resourceLinkId}')
+  public static async remove(@Path() resourceLinkId: string): Promise<void> {
+    try {
+      const resourceLink: ResourceLink = await ResourceLinkService.get(resourceLinkId);
+      await ResourceLinkService.remove(resourceLink._id);
     } catch (error: any) {
       throw error;
     }
