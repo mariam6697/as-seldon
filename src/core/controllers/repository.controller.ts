@@ -1,4 +1,4 @@
-import { Body, Delete, Path, Post, Route, Tags } from 'tsoa';
+import { Body, Delete, Get, Path, Post, Route, Tags } from 'tsoa';
 import CustomError from '../../infrastructure/models/error.model';
 import Project from '../models/project.model';
 import { RemoteFile } from '../models/remote.model';
@@ -15,7 +15,7 @@ export class RepositoryController {
   @Post('/:projectId')
   public static async create(
     @Path() projectId: string,
-    @Body() data: { files: RemoteFile[] }
+    @Body() data: { files: RemoteFile[]; private: boolean }
   ): Promise<Repository> {
     try {
       if (!projectId || !data.files) {
@@ -33,7 +33,7 @@ export class RepositoryController {
       }
 
       // Create remote repository
-      const repo: Repository = await RepositoryService.create(project);
+      const repo: Repository = await RepositoryService.create(project, data.private);
 
       // Upload files to remote repo
       await RepositoryService.updateRemoteRepo(repo, data.files);
@@ -47,7 +47,7 @@ export class RepositoryController {
   /**
    * Gets a repository by its project ID
    */
-  @Delete('/:projectId')
+  @Get('/:projectId')
   public static async getByProjectId(@Path() projectId: string): Promise<Repository[]> {
     try {
       const project: Project = await ProjectService.get({ projectId });

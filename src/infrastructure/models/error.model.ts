@@ -107,7 +107,14 @@ export default class CustomError extends Error {
   static LINK_NOT_FOUND = new CustomError({
     message: 'El recurso solicitado no existe',
     httpCode: 404,
-    internalCode: 12,
+    internalCode: 14,
+    data: null
+  });
+
+  static UPDATE_NOT_FOUND = new CustomError({
+    message: 'La actualizacion no existe',
+    httpCode: 404,
+    internalCode: 15,
     data: null
   });
 }

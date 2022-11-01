@@ -1,4 +1,4 @@
-import { Body, Get, Path, Post, Query, Route, Tags } from 'tsoa';
+import { Body, Delete, Get, Path, Post, Put, Query, Route, Tags } from 'tsoa';
 import Project, { ProjectUpdate } from '../models/project.model';
 import { ProjectUpdateService } from '../services/project-update.service';
 import { ProjectService } from '../services/project.service';
@@ -27,6 +27,26 @@ export class ProjectUpdateController {
   }
 
   /**
+   * Updates a project update
+   */
+  @Put('/{projectUpdateId}')
+  public static async update(
+    @Path() projectUpdateId: string,
+    @Body() projectUpdateData: ProjectUpdate
+  ): Promise<ProjectUpdate> {
+    try {
+      const projectUpdate: ProjectUpdate = await ProjectUpdateService.get(projectUpdateId);
+      const updatedProjectUpdate: ProjectUpdate = await ProjectUpdateService.update(
+        projectUpdate._id,
+        projectUpdateData
+      );
+      return updatedProjectUpdate;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  /**
    * Get
    */
   @Get('/{projectId}')
@@ -39,6 +59,19 @@ export class ProjectUpdateController {
       const project: Project = await ProjectService.get({ projectId });
       const result: any = await ProjectUpdateService.getByProjectId(project._id, page, limit);
       return result;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  /**
+   * Deletes a project update
+   */
+  @Delete('/{projectUpdateId}')
+  public static async remove(@Path() projectUpdateId: string): Promise<void> {
+    try {
+      const projectUpdate: ProjectUpdate = await ProjectUpdateService.get(projectUpdateId);
+      await ProjectUpdateService.remove(projectUpdate._id);
     } catch (error: any) {
       throw error;
     }

@@ -25,6 +25,25 @@ router.post(
   }
 );
 
+router.put(
+  '/:projectUpdateId',
+  AuthenticationMiddleware.allowIfLoggedIn,
+  AuthenticationMiddleware.grantAccess('project', 'updateAny'),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectUpdateId: string = req.params.projectUpdateId.toString();
+      const projectUpdateData: ProjectUpdate = Parser.parseProjectUpdate(req.body);
+      const projectUpdate: ProjectUpdate = await ProjectUpdateController.update(
+        projectUpdateId,
+        projectUpdateData
+      );
+      res.status(200).json({ status: 'ok', data: projectUpdate });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+);
+
 router.get(
   '/:projectId',
   AuthenticationMiddleware.allowIfLoggedIn,
@@ -36,6 +55,21 @@ router.get(
       const limit: number = req.query.limit ? parseInt(req.query.limit.toString()) : 10;
       const result: any = await ProjectUpdateController.getByProjectId(projectId, page, limit);
       res.status(200).json({ status: 'ok', data: result });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+);
+
+router.delete(
+  '/:projectUpdateId',
+  AuthenticationMiddleware.allowIfLoggedIn,
+  AuthenticationMiddleware.grantAccess('project', 'deleteAny'),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectUpdateId: string = req.params.projectUpdateId.toString();
+      await ProjectUpdateController.remove(projectUpdateId);
+      res.status(200).json({ status: 'ok' });
     } catch (error: any) {
       next(error);
     }

@@ -13,8 +13,12 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const files: RemoteFile[] = req.body.files;
+      const privateRepo: boolean = req.body.toString() === 'true' ? true : false;
       const projectId: string = req.params.projectId.toString();
-      const repo: Repository = await RepositoryController.create(projectId, { files });
+      const repo: Repository = await RepositoryController.create(projectId, {
+        files,
+        private: privateRepo
+      });
       res.status(200).json({ status: 'ok', data: repo });
     } catch (error: any) {
       next(error);
