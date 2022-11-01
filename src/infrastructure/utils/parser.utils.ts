@@ -1,7 +1,8 @@
 import User from '../../auth/models/user.model';
 import Category from '../../core/models/category.model';
 import File from '../../core/models/file.model';
-import Project from '../../core/models/project.model';
+import Project, { ProjectUpdate } from '../../core/models/project.model';
+import ResourceLink from '../../core/models/resource-link.model';
 import MiscUtils from './misc.utils';
 
 export default class Parser {
@@ -40,6 +41,17 @@ export default class Parser {
     return project;
   }
 
+  public static parseProjectUpdate(object: any): ProjectUpdate {
+    const projectUpdateFields: string[] = ['title', 'description', 'date'];
+    MiscUtils.hasRequiredData(object, projectUpdateFields);
+    const projectUpdate: ProjectUpdate = {
+      title: object.title.toString(),
+      description: object.description.toString(),
+      date: new Date(object.date.toString())
+    };
+    return projectUpdate;
+  }
+
   public static parseUser(object: any): User {
     const userFields: string[] = ['name', 'surname', 'role', 'email', 'enabled'];
     MiscUtils.hasRequiredData(object, userFields);
@@ -70,5 +82,17 @@ export default class Parser {
       backgroundHexColor: object.backgroundHexColor.toString()
     };
     return category;
+  }
+
+  public static parseResourceLink(object: any): ResourceLink {
+    const linkFields: string[] = ['title', 'url', 'public', 'type'];
+    MiscUtils.hasRequiredData(object, linkFields);
+    const link: ResourceLink = {
+      title: object.title.toString(),
+      url: object.url.toString(),
+      public: object.public.toString() == 'true' ? true : false,
+      type: object.type.toString()
+    };
+    return link;
   }
 }

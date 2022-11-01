@@ -9,7 +9,6 @@ export default interface Project {
   semester: Semester;
   year: string;
   categories?: string[];
-  updates?: string[];
   mainImage?: string;
   extraImages?: string[];
 }
@@ -19,6 +18,7 @@ export interface ProjectUpdate {
   title: string;
   description: string;
   date: Date;
+  project?: string;
 }
 
 export enum Semester {

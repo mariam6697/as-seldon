@@ -18,7 +18,8 @@ const roleAccess = {
     project: ['createAny', 'readAny', 'updateAny', 'deleteAny'],
     category: ['createAny', 'readAny', 'updateAny', 'deleteAny'],
     file: ['createAny', 'readAny', 'updateAny', 'deleteAny'],
-    repository: ['createAny', 'readAny', 'updateAny', 'deleteAny', 'deleteAll']
+    repository: ['createAny', 'readAny', 'updateAny', 'deleteAny', 'deleteAll'],
+    resourceLink: ['createAny', 'readAny', 'updateAny', 'deleteAny', 'deleteAll']
   },
   maintainer: {
     user: ['readOwn', 'updateOwn'],

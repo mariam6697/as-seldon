@@ -12,19 +12,20 @@ import Repository from '../models/repository.model';
 import CustomError from '../../infrastructure/models/error.model';
 
 export class RepositoryService {
-  public static async create(project: Project): Promise<Repository> {
+  public static async create(project: Project, privateRepo: boolean): Promise<Repository> {
     const name: string = `${Date.now()}-${project.name.toLowerCase().split(' ').join('-')}`;
     const ghRepo: RemoteRepo = await GitHubUtils.createRepo({
       name: name,
       description: project.shortDescription ? project.shortDescription : '',
       autoInit: true,
-      private: true
+      private: privateRepo
     });
     const newRepo: Repository = await RepositoryModel.create({
       name: name,
       url: ghRepo.html_url,
       project: project._id,
-      id: ghRepo.id
+      id: ghRepo.id,
+      private: privateRepo
     });
     return newRepo;
   }
