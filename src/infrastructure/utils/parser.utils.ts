@@ -85,10 +85,11 @@ export default class Parser {
   }
 
   public static parseResourceLink(object: any): ResourceLink {
-    const linkFields: string[] = ['title', 'url', 'public', 'type'];
+    const linkFields: string[] = ['title', 'description', 'url', 'public', 'type'];
     MiscUtils.hasRequiredData(object, linkFields);
     const link: ResourceLink = {
       title: object.title.toString(),
+      description: object.description.toString(),
       url: object.url.toString(),
       public: object.public.toString() == 'true' ? true : false,
       type: object.type.toString()
