@@ -25,12 +25,12 @@ router.post(
   }
 );
 
-router.get('/:projectId', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:projectNanoId', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const projectId: string = req.params.projectId.toString();
+    const projectNanoId: string = req.params.projectNanoId.toString();
     const page: number = req.query.page ? parseInt(req.query.page.toString()) : 1;
     const limit: number = req.query.limit ? parseInt(req.query.limit.toString()) : 10;
-    const result: any = await ResourceLinkController.getByProjectId(projectId, page, limit);
+    const result: any = await ResourceLinkController.getByProjectNanoId(projectNanoId, page, limit);
     res.status(200).json({ status: 'ok', data: result });
   } catch (error: any) {
     next(error);

@@ -30,15 +30,15 @@ export class ResourceLinkController {
   /**
    * Get all resources links for certain project
    */
-  @Get('/{projectId}')
-  public static async getByProjectId(
-    @Path() projectId: string,
+  @Get('/{projectNanoId}')
+  public static async getByProjectNanoId(
+    @Path() projectNanoId: string,
     @Query() page: number,
     @Query() limit: number
   ): Promise<ResourceLink> {
     try {
-      const project: Project = await ProjectService.get({ projectId });
-      const result: any = await ResourceLinkService.getByProjectId(project._id, page, limit);
+      const project: Project = await ProjectService.get({ projectNanoId });
+      const result: any = await ResourceLinkService.getByProjectId(project._id, true, page, limit);
       return result;
     } catch (error: any) {
       throw error;

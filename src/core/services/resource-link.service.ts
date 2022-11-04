@@ -17,9 +17,14 @@ export class ResourceLinkService {
     return resourceLink;
   }
 
-  public static async getByProjectId(projectId: string, page: number, limit: number): Promise<any> {
+  public static async getByProjectId(
+    projectId: string,
+    isPublic: boolean,
+    page: number,
+    limit: number
+  ): Promise<any> {
     const offset: number = (page - 1) * limit;
-    const result: any = await ResourceLinkModel.find({ project: projectId })
+    const result: any = await ResourceLinkModel.find({ project: projectId, public: isPublic })
       .skip(offset)
       .limit(limit);
     const resourceLinks: ResourceLink[] = result;
