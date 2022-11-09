@@ -15,7 +15,7 @@ export class RepositoryController {
   @Post('/:projectId')
   public static async create(
     @Path() projectId: string,
-    @Body() data: { files: RemoteFile[]; private: boolean }
+    @Body() data: { files: RemoteFile[]; private: boolean; label: string }
   ): Promise<Repository> {
     try {
       if (!projectId || !data.files) {
@@ -23,17 +23,8 @@ export class RepositoryController {
       }
       const project: Project = await ProjectService.get({ projectId });
 
-      // Check if project has a repository
-      const existingRepo: Repository = await RepositoryService.get({
-        projectId
-      });
-
-      if (existingRepo) {
-        throw CustomError.EXISTING_REPO;
-      }
-
       // Create remote repository
-      const repo: Repository = await RepositoryService.create(project, data.private);
+      const repo: Repository = await RepositoryService.create(project, data.private, data.label);
 
       // Upload files to remote repo
       await RepositoryService.updateRemoteRepo(repo, data.files);
@@ -47,11 +38,14 @@ export class RepositoryController {
   /**
    * Gets a repository by its project ID
    */
-  @Get('/:projectId')
-  public static async getByProjectId(@Path() projectId: string): Promise<Repository[]> {
+  @Get('/:projectNanoId')
+  public static async getByProjectId(@Path() projectNanoId: string): Promise<Repository[]> {
     try {
-      const project: Project = await ProjectService.get({ projectId });
-      const repos: Repository[] = await RepositoryService.getByProject({ projectId: project._id });
+      const project: Project = await ProjectService.get({ projectNanoId });
+      const repos: Repository[] = await RepositoryService.getByProject({
+        projectId: project._id,
+        private: false
+      });
       if (!repos) {
         return [];
       }

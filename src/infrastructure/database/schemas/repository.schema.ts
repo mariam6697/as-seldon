@@ -3,6 +3,7 @@ import Repository from '../../../core/models/repository.model';
 
 const RepositorySchema = new Schema<Repository>(
   {
+    label: { type: String, required: true },
     name: { type: String, required: true },
     url: { type: String, required: true },
     id: { type: Number, required: true },

@@ -12,7 +12,11 @@ import Repository from '../models/repository.model';
 import CustomError from '../../infrastructure/models/error.model';
 
 export class RepositoryService {
-  public static async create(project: Project, privateRepo: boolean): Promise<Repository> {
+  public static async create(
+    project: Project,
+    privateRepo: boolean,
+    label: string
+  ): Promise<Repository> {
     const name: string = `${Date.now()}-${project.name.toLowerCase().split(' ').join('-')}`;
     const ghRepo: RemoteRepo = await GitHubUtils.createRepo({
       name: name,
@@ -21,6 +25,7 @@ export class RepositoryService {
       private: privateRepo
     });
     const newRepo: Repository = await RepositoryModel.create({
+      label: label ?? name,
       name: name,
       url: ghRepo.html_url,
       project: project._id,
@@ -30,8 +35,17 @@ export class RepositoryService {
     return newRepo;
   }
 
-  public static async getByProject(data: { projectId: string }): Promise<Repository[]> {
-    const repos: Repository[] = await RepositoryModel.find({ project: data.projectId });
+  public static async getByProject(data: {
+    projectId: string;
+    private: boolean;
+  }): Promise<Repository[]> {
+    let query: any = {
+      project: data.projectId
+    };
+    if (data.private != null) {
+      query.private = data.private;
+    }
+    const repos: Repository[] = await RepositoryModel.find(query);
     return repos;
   }
 

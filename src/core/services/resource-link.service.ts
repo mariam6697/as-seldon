@@ -28,7 +28,10 @@ export class ResourceLinkService {
       .skip(offset)
       .limit(limit);
     const resourceLinks: ResourceLink[] = result;
-    const totalItems: number = await ResourceLinkModel.countDocuments({ project: projectId });
+    const totalItems: number = await ResourceLinkModel.countDocuments({
+      project: projectId,
+      public: isPublic
+    });
     return { totalItems, limit, page, resourceLinks };
   }
 
