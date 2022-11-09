@@ -13,11 +13,13 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const files: RemoteFile[] = req.body.files;
-      const privateRepo: boolean = req.body.toString() === 'true' ? true : false;
+      const privateRepo: boolean = req.body.private.toString() === 'true' ? true : false;
+      const label: string = req.body.label ? req.body.label.toString() : null;
       const projectId: string = req.params.projectId.toString();
       const repo: Repository = await RepositoryController.create(projectId, {
         files,
-        private: privateRepo
+        private: privateRepo,
+        label
       });
       res.status(200).json({ status: 'ok', data: repo });
     } catch (error: any) {
@@ -26,20 +28,15 @@ router.post(
   }
 );
 
-router.get(
-  '/project/:projectId',
-  AuthenticationMiddleware.allowIfLoggedIn,
-  AuthenticationMiddleware.grantAccess('repository', 'readAny'),
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const projectId: string = req.params.projectId.toString();
-      const repos: Repository[] = await RepositoryController.getByProjectId(projectId);
-      res.status(200).json({ status: 'ok', data: repos });
-    } catch (error: any) {
-      next(error);
-    }
+router.get('/project/:projectNanoId', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const projectNanoId: string = req.params.projectNanoId.toString();
+    const repos: Repository[] = await RepositoryController.getByProjectId(projectNanoId);
+    res.status(200).json({ status: 'ok', data: repos });
+  } catch (error: any) {
+    next(error);
   }
-);
+});
 
 router.delete(
   '/:repositoryId',
