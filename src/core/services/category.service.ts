@@ -22,6 +22,18 @@ export class CategoryService {
     }
   }
 
+  public static async getByLabel(label: string): Promise<Category> {
+    try {
+      const category: Category = await CategoryModel.findOne({ label }).lean();
+      if (!category) {
+        throw CustomError.CATEGORY_NOT_FOUND;
+      }
+      return category;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
   public static async getAll(page: number, limit: number): Promise<any> {
     const offset: number = (page - 1) * limit;
     const result: any = await CategoryModel.find().skip(offset).limit(limit);

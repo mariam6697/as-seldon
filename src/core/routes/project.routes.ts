@@ -36,9 +36,20 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     const page: number = req.query.page ? parseInt(req.query.page.toString()) : 1;
     const limit: number = req.query.limit ? parseInt(req.query.limit.toString()) : 10;
     const highlight: string = req.query.highlighted ? req.query.highlighted.toString() : null;
+    const cats: string = req.query.cat ? req.query.cat.toString() : null;
     const highlighted: boolean = highlight === 'true' ? true : false;
     const search: string = req.query.search ? req.query.search.toString() : null;
-    const result: any = await ProjectController.getAll(page, limit, highlighted, search);
+    const semester: string = req.query.semester ? req.query.semester.toString() : null;
+    const year: string = req.query.year ? req.query.year.toString() : null;
+    const result: any = await ProjectController.getAll(
+      page,
+      limit,
+      highlighted,
+      search,
+      cats,
+      semester,
+      year
+    );
     res.status(200).json({ status: 'ok', data: result });
   } catch (error: any) {
     next(error);

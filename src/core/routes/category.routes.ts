@@ -37,9 +37,24 @@ router.get(
 );
 
 router.get(
+  '/label/:categoryLabel',
+  // AuthenticationMiddleware.allowIfLoggedIn,
+  // AuthenticationMiddleware.grantAccess('category', 'readAny'),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const catLabel: string = req.params.categoryLabel.toString();
+      const category: Category = await CategoryController.getByLabel(catLabel);
+      res.status(200).json({ status: 'ok', data: category });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+);
+
+router.get(
   '/',
-  AuthenticationMiddleware.allowIfLoggedIn,
-  AuthenticationMiddleware.grantAccess('category', 'readAny'),
+  // AuthenticationMiddleware.allowIfLoggedIn,
+  // AuthenticationMiddleware.grantAccess('category', 'readAny'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const page: number = parseInt(req.query.page as string);

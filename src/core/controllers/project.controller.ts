@@ -1,7 +1,9 @@
 import { Body, Get, Path, Post, Put, Query, Route, Tags } from 'tsoa';
 import CustomError from '../../infrastructure/models/error.model';
 import MiscUtils from '../../infrastructure/utils/misc.utils';
+import Category from '../models/category.model';
 import Project from '../models/project.model';
+import { CategoryService } from '../services/category.service';
 import { ProjectService } from '../services/project.service';
 
 @Tags('Core > Projects')
@@ -48,16 +50,36 @@ export class ProjectController {
     @Query() page: number,
     @Query() limit: number,
     @Query() highlighted?: boolean,
-    @Query() search?: string
+    @Query() search?: string,
+    @Query() cat?: string,
+    @Query() semester?: string,
+    @Query() year?: string
   ): Promise<any> {
     try {
+      let catsIds: string[] = [];
       const select: string =
         'nanoId name description shortDescription highlighted semester year categories mainImage extraImages';
       let query: any = { visible: true };
       if (highlighted) {
         query.highlighted = highlighted;
       }
-      const result: any = await ProjectService.getAll(page, limit, query, select, search);
+      if (cat) {
+        const cats: string[] = cat.split(',');
+        for (let i = 0; i < cats.length; i++) {
+          let category: Category = await CategoryService.getByLabel(cats[i]);
+          catsIds.push(category._id);
+        }
+      }
+      const result: any = await ProjectService.getAll(
+        page,
+        limit,
+        query,
+        select,
+        search,
+        catsIds,
+        semester,
+        year
+      );
       return result;
     } catch (error: any) {
       throw error;

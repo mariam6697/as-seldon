@@ -42,6 +42,22 @@ export class CategoryController {
   }
 
   /**
+   * Retrieves data from a category given its unique label
+   */
+  @Get('/{categoryLabel}')
+  public static async getByLabel(@Path() categoryLabel: string): Promise<Category> {
+    try {
+      if (!categoryLabel) {
+        throw CustomError.REQUIRED_DATA;
+      }
+      const response: any = await CategoryService.getByLabel(categoryLabel);
+      return response;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  /**
    * Gets a paginated list with all the categories
    */
   @Get('/')
