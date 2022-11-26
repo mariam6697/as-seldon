@@ -28,8 +28,7 @@ router.get(
     try {
       const page: number = req.query.page ? parseInt(req.query.page as string) : 1;
       const limit: number = req.query.limit ? parseInt(req.query.limit as string) : 10;
-      const search: string = req.query.search ? (req.query.search as string) : null;
-      const result: any = await ProjectController.getAll(page, limit, search);
+      const result: any = await ProjectController.getAll(page, limit);
       res.status(200).json({ status: 'ok', data: result });
     } catch (error: any) {
       next(error);

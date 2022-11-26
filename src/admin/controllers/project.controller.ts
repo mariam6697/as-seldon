@@ -24,13 +24,9 @@ export class ProjectController {
    * Retrieves a paginated projects list
    */
   @Get('/')
-  public static async getAll(
-    @Query() page: number,
-    @Query() limit: number,
-    @Query() search?: string
-  ): Promise<any> {
+  public static async getAll(@Query() page: number, @Query() limit: number): Promise<any> {
     try {
-      const result: any = await ProjectService.getAll(page, limit, {}, '', search);
+      const result: any = await ProjectService.getAll(page, limit, {}, '');
       return result;
     } catch (error: any) {
       throw error;
