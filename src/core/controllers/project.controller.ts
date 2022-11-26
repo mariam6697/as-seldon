@@ -65,8 +65,8 @@ export class ProjectController {
       }
       if (cat) {
         const cats: string[] = cat.split(',');
-        for (let i = 0; i < cats.length; i++) {
-          let category: Category = await CategoryService.getByLabel(cats[i]);
+        for (let selectedCat of cats) {
+          let category: Category = await CategoryService.getByLabel(selectedCat);
           catsIds.push(category._id);
         }
       }
