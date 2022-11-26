@@ -46,14 +46,30 @@ export class ProjectService {
     limit: number,
     query: any,
     select?: string,
-    search?: string
+    cat?: string[],
+    semester?: string,
+    year?: string
   ): Promise<any> {
     const offset: number = (page - 1) * limit;
     select = select || '';
-    if (search) {
-      const searchRegexp: any = { $regex: search, $options: 'i' };
+    if (cat.length > 0) {
+      query['$and'] = query['$and'] ? query['$and'] : [];
       query['$and'].push({
-        $or: [{ name: searchRegexp }, { year: searchRegexp }]
+        categories: {
+          $all: cat
+        }
+      });
+    }
+    if (semester) {
+      query['$and'] = query['$and'] ? query['$and'] : [];
+      query['$and'].push({
+        semester
+      });
+    }
+    if (year) {
+      query['$and'] = query['$and'] ? query['$and'] : [];
+      query['$and'].push({
+        year
       });
     }
     const result: any = await ProjectModel.find(query, select)
