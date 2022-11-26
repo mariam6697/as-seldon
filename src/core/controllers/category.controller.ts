@@ -44,7 +44,7 @@ export class CategoryController {
   /**
    * Retrieves data from a category given its unique label
    */
-  @Get('/{categoryLabel}')
+  @Get('/label/{categoryLabel}')
   public static async getByLabel(@Path() categoryLabel: string): Promise<Category> {
     try {
       if (!categoryLabel) {
