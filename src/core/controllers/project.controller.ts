@@ -50,7 +50,6 @@ export class ProjectController {
     @Query() page: number,
     @Query() limit: number,
     @Query() highlighted?: boolean,
-    @Query() search?: string,
     @Query() cat?: string,
     @Query() semester?: string,
     @Query() year?: string
@@ -75,7 +74,6 @@ export class ProjectController {
         limit,
         query,
         select,
-        search,
         catsIds,
         semester,
         year

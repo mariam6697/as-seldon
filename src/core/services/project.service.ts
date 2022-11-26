@@ -46,20 +46,12 @@ export class ProjectService {
     limit: number,
     query: any,
     select?: string,
-    search?: string,
     cat?: string[],
     semester?: string,
     year?: string
   ): Promise<any> {
     const offset: number = (page - 1) * limit;
     select = select || '';
-    if (search) {
-      query['$and'] = query['$and'] ? query['$and'] : [];
-      const searchRegexp: any = { $regex: search, $options: 'i' };
-      query['$and'].push({
-        $or: [{ name: searchRegexp }, { year: searchRegexp }]
-      });
-    }
     if (cat.length > 0) {
       query['$and'] = query['$and'] ? query['$and'] : [];
       query['$and'].push({
