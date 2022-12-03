@@ -52,7 +52,7 @@ export class ProjectService {
   ): Promise<any> {
     const offset: number = (page - 1) * limit;
     select = select || '';
-    if (cat.length > 0) {
+    if (cat && cat.length > 0) {
       query['$and'] = query['$and'] ? query['$and'] : [];
       query['$and'].push({
         categories: {
