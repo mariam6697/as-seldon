@@ -50,8 +50,5 @@
     "nanoid": "^2.1.11",
     "swagger-ui-express": "^4.4.0",
     "tsoa": "^4.1.0"
-  },
-  "engines": {
-    "node": "18.4.0"
   }
 }
