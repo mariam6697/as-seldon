@@ -21,6 +21,21 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
   }
 });
 
+router.get(
+  '/check',
+  AuthenticationMiddleware.allowIfLoggedIn,
+  AuthenticationMiddleware.grantAccess('user', 'readOwn'),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const loggedInUserId: string = res.locals.loggedInUser._id;
+      const user: User = await UserController.get(loggedInUserId);
+      res.status(200).json({ status: 'ok', data: user });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+);
+
 router.post(
   '/',
   AuthenticationMiddleware.allowIfLoggedIn,
@@ -44,7 +59,7 @@ router.post(
 router.get(
   '/:userId',
   AuthenticationMiddleware.allowIfLoggedIn,
-  AuthenticationMiddleware.grantAccess('user', 'readOwn'),
+  AuthenticationMiddleware.grantAccess('user', 'readAny'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const loggedInUserId: string = res.locals.loggedInUser._id;
