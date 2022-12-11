@@ -50,7 +50,7 @@ export default class Server {
   public static config(app: Application): void {
     app.use(AuthenticationMiddleware.accessControl);
     app.use(ServerConfiguration.addHeaders);
-    app.use(express.json({ limit: 10485760 }));
+    app.use(express.json({ limit: '100mb' }));
     app.use(express.urlencoded({ extended: true }));
     app.use(morgan('dev'));
 
