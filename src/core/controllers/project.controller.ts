@@ -99,4 +99,16 @@ export class ProjectController {
       throw error;
     }
   }
+
+  /**
+   * Deletes project given its nano ID
+   */
+  @Get('/{projectId}')
+  public static async remove(@Path() projectId: string): Promise<void> {
+    try {
+      await ProjectService.remove(projectId);
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }

@@ -70,4 +70,14 @@ router.put(
   }
 );
 
+router.delete('/:projectId', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const projectId: string = req.params.projectId.toString();
+    await ProjectController.remove(projectId);
+    res.status(200).json({ status: 'ok' });
+  } catch (error: any) {
+    next(error);
+  }
+});
+
 export default router;

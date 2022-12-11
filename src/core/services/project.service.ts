@@ -97,4 +97,16 @@ export class ProjectService {
       throw error;
     }
   }
+
+  public static async remove(projectId: string): Promise<void> {
+    try {
+      const project: Project = await ProjectModel.findById(projectId);
+      if (!project) {
+        throw CustomError.PROJECT_NOT_FOUND;
+      }
+      await ProjectModel.findByIdAndDelete(projectId);
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }
