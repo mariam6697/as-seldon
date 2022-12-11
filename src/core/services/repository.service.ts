@@ -17,7 +17,9 @@ export class RepositoryService {
     privateRepo: boolean,
     label: string
   ): Promise<Repository> {
-    const name: string = `${Date.now()}-${project.name.toLowerCase().split(' ').join('-')}`;
+    const name: string = `${Date.now()}-${project.name.toLowerCase().split(' ').join('-')}`
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
     const ghRepo: RemoteRepo = await GitHubUtils.createRepo({
       name: name,
       description: project.shortDescription ? project.shortDescription : '',
