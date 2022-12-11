@@ -83,4 +83,19 @@ router.put(
   }
 );
 
+router.delete(
+  '/:categoryId',
+  AuthenticationMiddleware.allowIfLoggedIn,
+  AuthenticationMiddleware.grantAccess('category', 'deleteAny'),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const categoryId: string = req.params.categoryId.toString();
+      await CategoryController.remove(categoryId);
+      res.status(200).json({ status: 'ok' });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+);
+
 export default router;

@@ -1,4 +1,4 @@
-import { Body, Get, Path, Post, Put, Query, Route, Tags } from 'tsoa';
+import { Body, Delete, Get, Path, Post, Put, Query, Route, Tags } from 'tsoa';
 import CustomError from '../../infrastructure/models/error.model';
 import MiscUtils from '../../infrastructure/utils/misc.utils';
 import Category from '../models/category.model';
@@ -86,6 +86,21 @@ export class CategoryController {
       }
       const category: Category = await CategoryService.update(categoryId, categoryData);
       return category;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  /**
+   * Deletes a category given its ID
+   */
+  @Delete('/{categoryId}')
+  public static async remove(@Path() categoryId: string): Promise<void> {
+    try {
+      if (!categoryId) {
+        throw CustomError.REQUIRED_DATA;
+      }
+      await CategoryService.remove(categoryId);
     } catch (error: any) {
       throw error;
     }

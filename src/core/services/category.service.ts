@@ -57,4 +57,16 @@ export class CategoryService {
       throw error;
     }
   }
+
+  public static async remove(categoryId: string): Promise<void> {
+    try {
+      const category: Category = await CategoryModel.findById(categoryId).lean();
+      if (!category) {
+        throw CustomError.CATEGORY_NOT_FOUND;
+      }
+      await CategoryModel.findByIdAndDelete(categoryId);
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }
