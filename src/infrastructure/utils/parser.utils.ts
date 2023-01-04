@@ -36,6 +36,7 @@ export default class Parser {
       highlighted: object.highlighted.toString() == 'true' ? true : false,
       visible: object.visible.toString() == 'true' ? true : false,
       semester: object.semester.toString(),
+      categories: object.categories.constructor === Array ? object.categories : [],
       year: object.year.toString()
     };
     return project;
